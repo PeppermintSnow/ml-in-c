@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[415],{8096:e=>{e.exports=JSON.parse('{"blogBasePath":"/ml-in-c/changelogs","blogTitle":"Blog","authorsListPath":"/ml-in-c/changelogs/authors"}')}}]);

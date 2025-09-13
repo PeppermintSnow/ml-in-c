@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://peppermintsnow.github.io/ml-in-c/changelogs</id>
+    <title>ML-in-C Blog</title>
+    <updated>2025-09-09T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://peppermintsnow.github.io/ml-in-c/changelogs"/>
+    <subtitle>ML-in-C Blog</subtitle>
+    <icon>https://peppermintsnow.github.io/ml-in-c/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[v0.0.0]]></title>
+        <id>https://peppermintsnow.github.io/ml-in-c/changelogs/v0.0.0</id>
+        <link href="https://peppermintsnow.github.io/ml-in-c/changelogs/v0.0.0"/>
+        <updated>2025-09-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Initial release of the project. This version introduces the foundational DataFrame type definition and its helper functions. No models or training functionality are included yet.]]></summary>
+        <content type="html"><![CDATA[<p>Initial release of the project. This version introduces the foundational <code>DataFrame</code> type definition and its helper functions. No models or training functionality are included yet.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="added">Added<a href="https://peppermintsnow.github.io/ml-in-c/changelogs/v0.0.0#added" class="hash-link" aria-label="Direct link to Added" title="Direct link to Added">​</a></h2>
+<ul>
+<li><code>DataFrame</code> type definition with helper functions for initialization and modification.<!-- -->
+<ul>
+<li>Uses a <strong>1D array</strong> under the hood instead of a traditional 2D array.</li>
+<li>Utilizes <strong>arithmetic indexing</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi>o</mi><msub><mi>w</mi><mi>i</mi></msub><mo>⋅</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>s</mi><mo>+</mo><mi>c</mi><mi>o</mi><msub><mi>l</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">row_i \cdot cols + col_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5945em;vertical-align:-0.15em"></span><span class="mord mathnormal">ro</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em"></span><span class="mord mathnormal">co</span><span class="mord mathnormal" style="margin-right:0.01968em">l</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em"></span><span class="mord mathnormal">co</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em"><span style="top:-2.55em;margin-left:-0.0197em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span></span></span></span> to avoid multi-indexing overhead.</li>
+</ul>
+</li>
+</ul>]]></content>
+        <category label="DataFrame" term="DataFrame"/>
+    </entry>
+</feed>

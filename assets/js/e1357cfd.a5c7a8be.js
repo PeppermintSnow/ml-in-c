@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[2841],{2979:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"v0.0.0","permalink":"/ml-in-c/changelogs/v0.0.0","unlisted":false,"date":"2025-09-09T00:00:00.000Z"}]}')}}]);

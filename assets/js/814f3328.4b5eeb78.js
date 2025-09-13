@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[7472],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Implementing a DataFrame in C: Flattened Matrix vs. Traditional Matrix","permalink":"/ml-in-c/blog/2025/09/10/implementing-a-dataframe-in-c","unlisted":false,"date":"2025-09-10T00:00:00.000Z"}]}')}}]);

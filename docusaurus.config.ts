@@ -67,7 +67,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'PeppermintSnow', // Usually your GitHub org/user name.
   projectName: 'ml-in-c', // Usually your repo name.
-
+  
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -110,7 +110,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/social-card.png',
     colorMode: {
       defaultMode: 'dark',
     },
@@ -149,28 +149,19 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Docs',
+              to: '/docs/wip',
+            },
+            {
+              label: 'API',
+              to: '/api/wip',
+            },
+            {
+              label: 'Changelog',
+              to: '/changelogs',
             },
           ],
         },
-        // {
-        //   title: 'Community',
-        //   items: [
-        //     {
-        //       label: 'Stack Overflow',
-        //       href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-        //     },
-        //     {
-        //       label: 'Discord',
-        //       href: 'https://discordapp.com/invite/docusaurus',
-        //     },
-        //     {
-        //       label: 'X',
-        //       href: 'https://x.com/docusaurus',
-        //     },
-        //   ],
-        // },
         {
           title: 'More',
           items: [
@@ -180,7 +171,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/peppermintsnow/ml-in-c',
             },
           ],
         },

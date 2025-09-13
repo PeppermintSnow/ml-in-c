@@ -44,7 +44,7 @@ function LatestBlogPost() {
         </p>
       </div>
       <div className="latest-blog__button">
-        <Link className="button hero__button button--block">Read more</Link>
+        <Link to={url} className="button hero__button button--block">Read more</Link>
       </div>
     </div>
   );
@@ -52,7 +52,6 @@ function LatestBlogPost() {
 
 function LatestChangelog() {
   const pluginData = usePluginData('docusaurus-plugin-latest-changelog');
-  console.log(useGlobalData())
   if (!pluginData) {
     return <p>Loading</p>
   }
@@ -77,7 +76,7 @@ function LatestChangelog() {
         </p>
       </div>
       <div className="latest-blog__button">
-        <Link className="button hero__button button--block">Read more</Link>
+        <Link to={url} className="button hero__button button--block">Read more</Link>
       </div>
     </div>
   )

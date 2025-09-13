@@ -24,12 +24,12 @@ function HomepageHeader() {
             <div className={styles.buttons}>
               <Link
                 className="button hero__button button--lg"
-                to="/docs/">
+                to="/docs/wip">
                 Getting Started
               </Link>
               <Link
                 className="button hero__button button--lg"
-                to="/docs/intro">
+                to="/api/wip">
                 API Reference
               </Link>
             </div>

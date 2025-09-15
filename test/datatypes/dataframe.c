@@ -24,12 +24,12 @@ DataFrame *test_DF_fromArray() {
     DataFrame *df = DF_fromArray(X, lenX, columnName);
 
     assert(df != NULL);
-    assert(df->nFeatures == 1);
-    assert(df->length == 6);
-    assert(df->columnNames != NULL);
-    assert(strcmp(df->columnNames[0], columnName) == 0);
+    assert(df->numCols == 1);
+    assert(df->numRows == 6);
+    assert(df->featureNames != NULL);
+    assert(strcmp(df->featureNames[0], columnName) == 0);
     for (int i = 0; i < lenX; i++) {
-        assert(df->rows[i] == X[i]);
+        assert(df->data[i] == X[i]);
     }
     return df;
 }
@@ -46,18 +46,18 @@ void test_DF_addColumn(DataFrame *df) {
     DF_addColumn(df, X2, nameX2);
 
     assert(df != NULL);
-    assert(df->nFeatures == 3);
-    assert(df->length == 6);
-    assert(df->columnNames != NULL);
-    assert(strcmp(df->columnNames[0], nameX0) == 0);
-    assert(strcmp(df->columnNames[1], nameX1) == 0);
-    assert(strcmp(df->columnNames[2], nameX2) == 0);
-    for (int i = 0; i < df->length; i++) {
-        printf("row %d: %.1f = %.1f\n", i, df->rows[i * df->nFeatures], X0[i]);
-        printf("row %d: %.1f = %.1f\n", i * df->nFeatures + 1, df->rows[i * df->nFeatures + 1], X1[i]);
-        printf("row %d: %.1f = %.1f\n", i * df->nFeatures + 2, df->rows[i * df->nFeatures + 2], X2[i]);
-        assert(df->rows[i * df->nFeatures] == X0[i]);
-        assert(df->rows[i * df->nFeatures + 1] == X1[i]);
-        assert(df->rows[i * df->nFeatures + 2] == X2[i]);
+    assert(df->numCols == 3);
+    assert(df->numRows == 6);
+    assert(df->featureNames != NULL);
+    assert(strcmp(df->featureNames[0], nameX0) == 0);
+    assert(strcmp(df->featureNames[1], nameX1) == 0);
+    assert(strcmp(df->featureNames[2], nameX2) == 0);
+    for (int i = 0; i < df->numRows; i++) {
+        printf("row %d: %.1f = %.1f\n", i, df->data[i * df->numCols], X0[i]);
+        printf("row %d: %.1f = %.1f\n", i * df->numCols + 1, df->data[i * df->numCols + 1], X1[i]);
+        printf("row %d: %.1f = %.1f\n", i * df->numCols + 2, df->data[i * df->numCols + 2], X2[i]);
+        assert(df->data[i * df->numCols] == X0[i]);
+        assert(df->data[i * df->numCols + 1] == X1[i]);
+        assert(df->data[i * df->numCols + 2] == X2[i]);
     }
 }

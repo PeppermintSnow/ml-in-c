@@ -154,11 +154,11 @@ const config: Config = {
           items: [
             {
               label: 'Docs',
-              to: '/docs/wip',
+              to: '/docs/category/getting-started',
             },
             {
               label: 'API',
-              to: '/api/wip',
+              to: '/api/dataframe',
             },
             {
               label: 'Changelog',

@@ -1,0 +1,51 @@
+---
+title: "Installation"
+description: "Installation instructions using CMake."
+sidebar_position: 2
+last_updated:
+    date: 2025-09-15
+    author: PeppermintSnow
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::note
+
+This guide assumes you are comfortable with cloning Git repositories and building C libraries using CMake
+
+:::
+
+**Prerequisites**:  
+- [CMake 4.1.1](https://cmake.org/download/)  
+- [GCC 15.2.1](https://gcc.gnu.org/install/)
+
+<Tabs>
+    <TabItem value="linux" label="Linux" default>
+        Clone and build the files using CMake.
+        ```bash
+        git clone -b main git@github.com:PeppermintSnow/ml-in-c.git --single-branch && cd ml-in-c
+        mkdir build && cd build
+        cmake ..
+        make
+        ```
+        :::tip[Global Install]
+        It is also recommended to install globally for ease of use. 
+        ```bash
+        sudo make install
+        ```
+        :::
+        :::info[Compiling]
+        Now you can compile your programs with the library.
+        ```bash
+        gcc myProgram.c -I/usr/local/include/ml-in-c -L/usr/local/lib -lml-in-c -o myProgram
+        ```
+        :::
+        :::danger[Uninstall]
+        You can also remove the library by running the uninstall command.
+        ```bash
+        sudo make uninstall
+        ```
+        :::
+    </TabItem>
+</Tabs>

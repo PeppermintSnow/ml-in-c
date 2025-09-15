@@ -24,12 +24,12 @@ function HomepageHeader() {
             <div className={styles.buttons}>
               <Link
                 className="button hero__button button--lg"
-                to="/docs/wip">
+                to="/docs/category/getting-started">
                 Getting Started
               </Link>
               <Link
                 className="button hero__button button--lg"
-                to="/api/wip">
+                to="/api/dataframe">
                 API Reference
               </Link>
             </div>
@@ -53,7 +53,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="A machine learning library written in C.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

@@ -126,3 +126,8 @@
 [data-theme='dark'] img[src$='#gh-light-mode-only'] {
   display: none;
 }
+
+/* Footer Styles */
+footer .footer__copyright .footer__link {
+  color: var(--ifm-color-primary-lightest) !important;
+}

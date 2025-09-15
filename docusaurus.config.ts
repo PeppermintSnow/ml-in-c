@@ -83,6 +83,10 @@ const config: Config = {
     [
       'classic',
       {
+        gtag: {
+          trackingID: 'G-J43PH6QYMX',
+          anonymizeIP: true,
+        },
         docs: {
           sidebarPath: './sidebars.docs.ts',
           remarkPlugins: [remarkMath],
@@ -176,7 +180,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} ML-in-C, Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} ML-in-C, <a href="https://peppermintsnow.github.io" class="footer__link">@PeppermintSnow</a>`,
     },
     prism: {
       theme: prismThemes.github,

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[7007],{2907:a=>{a.exports=JSON.parse('{"tags":[{"label":"DataFrame","permalink":"/ml-in-c/changelogs/tags/data-frame","count":1}]}')}}]);

@@ -11,7 +11,8 @@ on:
 jobs:
   generate-docs:
     runs-on: ubuntu-latest
-
+    outputs:
+      app-token: ${{ steps.app-token.outputs.token }}
     steps:
       - name: Create app token
         id: app-token
@@ -110,3 +111,5 @@ jobs:
       - name: Deploy to GitHub pages
         id: deployment
         uses: actions/deploy-pages@v4.0.5
+        with:
+          token: ${{ needs.generate-docs.outputs.app-token }}

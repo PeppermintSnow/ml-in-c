@@ -140,7 +140,7 @@ const config: Config = {
         {to: '/blog', label: 'Blog', position: 'left'},
         {to: '/changelogs', label: 'Changelogs', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/PeppermintSnow/ml-in-c',
           label: 'GitHub',
           position: 'right',
         },

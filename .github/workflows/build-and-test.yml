@@ -13,7 +13,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
+    steps: 
+      - name: Setup CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: latest
+        
       - name: Checkout library
         uses: actions/checkout@v5.0.0
       

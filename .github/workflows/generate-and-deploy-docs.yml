@@ -7,6 +7,11 @@ on:
     paths:
       - 'includes/**'
   workflow_dispatch:
+  
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   generate-docs:
@@ -101,9 +106,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -111,5 +113,3 @@ jobs:
       - name: Deploy to GitHub pages
         id: deployment
         uses: actions/deploy-pages@v4.0.5
-        with:
-          token: ${{ needs.generate-docs.outputs.app-token }}

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #ifdef _WIN32
-    #include "..\\..\\include\\datatypes\\dataframe.h"
+    #include "..\\..\\..\\include\\datatypes\\dataframe\\core.h"
 #else
-    #include "../../include/datatypes/dataframe.h"
+    #include "../../../include/datatypes/dataframe/core.h"
 #endif
 
 /**

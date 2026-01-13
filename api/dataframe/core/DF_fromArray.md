@@ -1,8 +1,8 @@
 ---
 title: "DF_fromArray"
 description: "Creates a DataFrame with one feature from the given array."
-tags: ['dataframe.h', 'Function', 'Added 0.0.0', 'Updated 0.0.0']
-keywords: ['ML-in-C', 'machine learning', 'dataframe.h', 'DF_fromArray', 'function DF_fromArray', 'DF_fromArray in dataframe.h']
+tags: ['core.h', 'Function', 'Added 0.0.0', 'Updated 0.0.0']
+keywords: ['ML-in-C', 'machine learning', 'core.h', 'DF_fromArray', 'function DF_fromArray', 'DF_fromArray in core.h']
 last_update:
   date: 2025-09-14
   author: PeppermintSnow

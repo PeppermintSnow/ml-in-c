@@ -1,8 +1,8 @@
 ---
 title: "DF_free"
 description: "Frees all allocated memory by the DataFrame."
-tags: ['dataframe.h', 'Function', 'Added 0.0.0', 'Updated 0.0.0']
-keywords: ['ML-in-C', 'machine learning', 'dataframe.h', 'DF_free', 'function DF_free', 'DF_free in dataframe.h']
+tags: ['core.h', 'Function', 'Added 0.0.0', 'Updated 0.0.0']
+keywords: ['ML-in-C', 'machine learning', 'core.h', 'DF_free', 'function DF_free', 'DF_free in core.h']
 last_update:
   date: 2025-09-14
   author: PeppermintSnow

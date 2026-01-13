@@ -1,8 +1,8 @@
 ---
 title: "DataFrame"
 description: "Represents a matrix with names for each column. Data is stored as a row-major flattened array."
-tags: ['dataframe.h', 'Struct', 'Added 0.0.0', 'Updated 0.0.0']
-keywords: ['ML-in-C', 'machine learning', 'dataframe.h', 'DataFrame', 'struct DataFrame', 'DataFrame in dataframe.h']
+tags: ['core.h', 'Struct', 'Added 0.0.0', 'Updated 0.0.0']
+keywords: ['ML-in-C', 'machine learning', 'core.h', 'DataFrame', 'struct DataFrame', 'DataFrame in core.h']
 last_update:
   date: 2025-09-14
   author: PeppermintSnow
@@ -35,16 +35,16 @@ Added in version **0.0.0**
 - **`int numCols`** ← _Number of columns (features) per row_
 - **`char** featureNames`** ← _Array of column/feature names_
 
-## Related Functions
-- [**`DF_addColumn`**](DF_addColumn) → `int`  
+## Core Functions
+- [**`DF_addColumn`**](core/DF_addColumn) → `int`  
 _Adds a single column/feature to an existing DataFrame._  
 **Params**: `DataFrame* df`  `double* data`  `char* name` 
 
-- [**`DF_free`**](DF_free) → `void`  
+- [**`DF_free`**](core/DF_free) → `void`  
 _Frees all allocated memory by the DataFrame._  
 **Params**: `DataFrame* df` 
 
-- [**`DF_fromArray`**](DF_fromArray) → `DataFrame*`  
+- [**`DF_fromArray`**](core/DF_fromArray) → `DataFrame*`  
 _Creates a DataFrame with one feature from the given array._  
 **Params**: `double* data`  `int numRows`  `char* name` 
 

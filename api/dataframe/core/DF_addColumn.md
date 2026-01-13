@@ -1,8 +1,8 @@
 ---
 title: "DF_addColumn"
 description: "Adds a single column/feature to an existing DataFrame."
-tags: ['dataframe.h', 'Function', 'Added 0.0.0', 'Updated 0.0.0']
-keywords: ['ML-in-C', 'machine learning', 'dataframe.h', 'DF_addColumn', 'function DF_addColumn', 'DF_addColumn in dataframe.h']
+tags: ['core.h', 'Function', 'Added 0.0.0', 'Updated 0.0.0']
+keywords: ['ML-in-C', 'machine learning', 'core.h', 'DF_addColumn', 'function DF_addColumn', 'DF_addColumn in core.h']
 last_update:
   date: 2025-09-14
   author: PeppermintSnow

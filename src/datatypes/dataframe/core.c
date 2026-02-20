@@ -109,8 +109,49 @@ int DF_addColumn(DataFrame *df, double *data, char *name) {
     return 0;
 }
 
-// TODO: Add DF_fromCSV()
-// TODO: Add DF_addRows()
+/*
+ * Deletes the specified column from a DataFrame.
+ */
+int DF_deleteColumn(DataFrame *df, char *name) {
+    // TODO: Finish implementation
+}
+
+/*
+ * Adds a row/entry to a DataFrame.
+ */
+int DF_addRow(DataFrame *df, double *data) {
+    // TODO: Finish implementation
+}
+
+/*
+ * Deletes a row/entry from a DataFrame
+ */
+int DF_deleteRow(DataFrame *df, double index) {
+    // TODO: Finish implementation
+}
+
+/*
+ * Displays the DataFrame in a table
+ */
+void DF_display(DataFrame *df) {
+    // Compute column widths
+    int colWidths[df->numCols];
+    for (int i = 0; i < df->numCols; i++) {
+        colWidths[i] = strlen(df->featureNames[i]) + 4;
+    }
+
+    for (int i = 0; i < df->numCols; i++) {
+        char *name = df->featureNames[i];
+        printf("%-*s", colWidths[i], name);
+    }
+
+    for (int rowIdx = 0; rowIdx < df->numRows; rowIdx++) {
+        printf("\n");
+        for (int colIdx = 0; colIdx < df->numCols; colIdx++) {
+            printf("%-*.0lf", colWidths[colIdx], df->data[rowIdx * df->numCols + colIdx]);
+        }
+    }
+}
 
 /**
  * Frees all memory allocated by the DataFrame.

@@ -81,13 +81,13 @@ int DF_addColumn(DataFrame *df, double *data, char *name) {
     }
 
     // Update rows
-    for (int i = 0; i < df->numRows; i++) {
-          for (int j = 0; j < oldNumCols; j++) {
+    for (int rowIdx = 0; rowIdx < df->numRows; rowIdx++) {
+          for (int colIdx = 0; colIdx < oldNumCols; colIdx++) {
             // Copy old rows to new
-            newData[i * newNumCols + j] = oldData[i * oldNumCols + j];
+            newData[rowIdx * newNumCols + colIdx] = oldData[rowIdx * oldNumCols + colIdx];
         }
         // Fill gaps with new column
-        newData[i * newNumCols + oldNumCols] = data[i];
+        newData[rowIdx * newNumCols + oldNumCols] = data[rowIdx];
     }
     free(oldData);
 
@@ -113,7 +113,59 @@ int DF_addColumn(DataFrame *df, double *data, char *name) {
  * Deletes the specified column from a DataFrame.
  */
 int DF_deleteColumn(DataFrame *df, char *name) {
-    // TODO: Finish implementation
+    // offset is -1 if no matches
+    // column index = offset for strided access
+    int offset = -1;
+    for (int i = 0; i < df->numCols; i++) {
+        if (strcmp(name, df->featureNames[i]) == 0) {
+            offset = i;
+        }
+    }
+
+    // Delete column if match was found
+    if (offset >= 0) {
+        // Allocate memory for df->numCols - 1 column
+        double *newData = malloc(df->numRows * (df->numCols - 1) * sizeof(double));
+        if (!newData) {
+            fprintf(stderr, "Failed to allocate memory for the new DataFrame rows.\n");
+            return -1;
+        }
+
+        // Copy data excluding the data of target column
+        int dataIdx = 0;
+        for (int rowIdx = 0; rowIdx < df->numRows; rowIdx++) {
+            for (int colIdx = 0; colIdx < df->numCols; colIdx++) {
+                int index = rowIdx * df->numCols + colIdx;
+                int skipIndex = rowIdx * df->numCols + offset;
+                if (index != skipIndex) {
+                    newData[dataIdx] = df->data[index];
+                    dataIdx++;
+                }
+            }
+            printf("\n");
+        }
+
+        // Allocate memory for df->numCols - 1 featureNames
+        char **newFeatureNames = realloc(df->featureNames, (df->numCols - 1) * sizeof(char*));
+        if (!newFeatureNames) {
+            fprintf(stderr, "Failed to reallocate memory for the DataFrame feature names.\n");
+            free(newData);
+            return -1;
+        }
+
+        // Delete column name from featureNames by shifting to left from offset to end - 1
+        for (int i = offset; i < df->numCols - 1; i++) {
+            newFeatureNames[i] = df->featureNames[i + 1];
+        }
+
+        df->featureNames = newFeatureNames;
+        df->data = newData;
+        df->numCols = df->numCols - 1;
+
+        return 0;
+    }
+
+    return 1;
 }
 
 /*
@@ -139,6 +191,8 @@ void DF_display(DataFrame *df) {
     for (int i = 0; i < df->numCols; i++) {
         colWidths[i] = strlen(df->featureNames[i]) + 4;
     }
+
+    printf("%dx%d DataFrame\n", df->numRows, df->numCols);
 
     for (int i = 0; i < df->numCols; i++) {
         char *name = df->featureNames[i];

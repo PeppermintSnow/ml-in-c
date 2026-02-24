@@ -172,6 +172,9 @@ int df_column_delete(dataframe_t *df, const char *column_name) {
 
 /*
  * Adds a row/entry to a DataFrame.
+ *
+ * TODO: Error handling
+ *           - Column mismatch
  */
 int df_row_add(dataframe_t *df, const double *data) {
     double *tmp_data = malloc((df->n_rows + 1) * df->n_columns * sizeof(*df->data));
@@ -193,9 +196,32 @@ int df_row_add(dataframe_t *df, const double *data) {
 /*
  * Deletes a row/entry from a DataFrame
  */
-// int df_row_delete(dataframe_t *df, const size_t index) {
-//     // TODO: Finish implementation
-// }
+int df_row_delete(dataframe_t *df, const size_t index) {
+    if (index > df->n_rows - 1) return 1;
+
+    double *tmp_data = malloc((df->n_rows - 1) * df->n_columns * sizeof(*df->data));
+    if (!tmp_data)
+        return -ENOMEM;
+
+    for (size_t r = 0; r < df->n_rows; r++) {
+        if (r == index) continue;
+
+        size_t r_shifted = (r > index) ? r - 1 : r;
+
+        memcpy(
+            &tmp_data[r_shifted * df->n_columns], 
+            &df->data[r * df->n_columns],
+            df->n_columns * sizeof(*df->data)
+        );
+    }
+
+    free(df->data);
+    
+    df->data = tmp_data;
+    df->n_rows--;
+
+    return 0;
+}
 
 /*
  * Displays the DataFrame in a table

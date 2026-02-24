@@ -11,6 +11,10 @@
 /**
  * Creates a DataFrame with one feature/column from an array.
  * Allocates memory and copies input into the struct.
+ *
+ * TODO: Error handling
+ *           - Empty array
+ *           - Row count mismatch
  */
 dataframe_t *df_create_from_array(const double *data, const int n_rows, const char *column_name) {
     struct dataframe *df = malloc(sizeof(struct dataframe));
@@ -45,6 +49,10 @@ dataframe_t *df_create_from_array(const double *data, const int n_rows, const ch
 /**
  * Adds a new column/feature to an existing DataFrame.
  * Expands allocated memory and appends input data to the end of each row.
+ *
+ * TODO: Error handling
+ *          - Data/Row count mismatch
+ *          - Duplicate column name
  */
 int df_column_add(dataframe_t *df, const double *data, const char *column_name) {
     double *tmp_data = malloc(df->n_rows * (df->n_columns + 1) * sizeof(*df->data));
@@ -165,14 +173,27 @@ int df_column_delete(dataframe_t *df, const char *column_name) {
 /*
  * Adds a row/entry to a DataFrame.
  */
-// int DF_addRow(DataFrame *df, double *data) {
-//     // TODO: Finish implementation
-// }
+int df_row_add(dataframe_t *df, const double *data) {
+    double *tmp_data = malloc((df->n_rows + 1) * df->n_columns * sizeof(*df->data));
+    if (!tmp_data) 
+        return -ENOMEM;
+
+    memcpy(tmp_data, df->data, df->n_rows * df->n_columns * sizeof(*df->data));
+    for (size_t c = 0; c < df->n_columns; c++)
+        tmp_data[df->n_rows * df->n_columns + c] = data[c];
+
+    free(df->data);
+
+    df->data = tmp_data;
+    df->n_rows++;
+
+    return 0;
+}
 
 /*
  * Deletes a row/entry from a DataFrame
  */
-// int DF_deleteRow(DataFrame *df, double index) {
+// int df_row_delete(dataframe_t *df, const size_t index) {
 //     // TODO: Finish implementation
 // }
 
@@ -199,6 +220,8 @@ void df_display(const dataframe_t *df) {
             printf("%-*.0lf", widths[c], df->data[r * df->n_columns + c]);
         }
     }
+
+    printf("\n");
 }
 
 /**

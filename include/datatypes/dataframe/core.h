@@ -161,7 +161,7 @@ int df_column_delete(dataframe_t *df, const char *column_name);
  *      return 0;
  * }
  */
-int df_row_add(dataframe_t *df, double *data);
+int df_row_add(dataframe_t *df, const double *data);
 
 /**
  * @brief Deletes a row/entry from a DataFrame.
@@ -193,7 +193,7 @@ int df_row_add(dataframe_t *df, double *data);
  *      return 0;
  * }
  */
-int df_row_delete(dataframe_t *df, double index);
+int df_row_delete(dataframe_t *df, const size_t index);
 
 /**
  * @brief Displays the DataFrame in a table.

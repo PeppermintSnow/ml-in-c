@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #ifndef DATAFRAME_CORE_H
 #define DATAFRAME_CORE_H
 
@@ -16,36 +18,36 @@
  *
  * int main() {
  *      // Create from array
- *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      double column1[] = {1, 2, 3};
+ *      dataframe_t *df = df_create_from_array(column1, 3, "feature1");
  * 
  *      // Add a column
- *      double newData[] = {4, 5, 6};
- *      DF_addColumn(df, newData, "feature2");
+ *      double column2[] = {4, 5, 6};
+ *      df_column_add(df, column2, "feature2");
  *
- *      // Free array from memory
- *      DF_free(df);
+ *      // Free from memory
+ *      df_free(df);
  *
  *      return 0;
  * }
  * @endcode
  */
-typedef struct {
+typedef struct dataframe {
     double *data;           /**< Flattened array */
-    int numRows;            /**< Number of rows (samples) */    
-    int numCols;            /**< Number of columns (features) per row */
-    char **featureNames;    /**< Array of column/feature names */
-} DataFrame;
+    char **columns;         /**< Array of column names */
+    size_t n_rows;          /**< Number of rows */    
+    size_t n_columns;          /**< Number of columns */
+} dataframe_t;
 
 /**
  * @brief Creates a DataFrame with one feature from the given array.
  *
  * @param data Pointer to the source array.
- * @param numRows Number of rows/samples in the source array.
- * @param name Name of the column/feature.
+ * @param n_rows Number of rows/samples in the source array.
+ * @param column_name Name of the column.
  * @return Pointer to the newly created DataFrame.
  * @note Caller is responsible for freeing allocated memory.
- * @see DF_free() to free the DataFrame.
+ * @see df_free() to free the DataFrame.
  *
  * @author PeppermintSnow
  * @since 0.0.0
@@ -58,20 +60,20 @@ typedef struct {
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *
  *      return 0;
  * }
  * @endcode
  */
-DataFrame *DF_fromArray(double *data, int numRows, char *name);
+dataframe_t *df_create_from_array(const double *data, const int n_rows, const char *column_name);
 
 /**
  * @brief Adds a single column/feature to an existing DataFrame.
  *
  * @param df Pointer to the existing DataFrame to add the column on.
  * @param data Pointer to the source array containing the new data to be added.
- * @param name Name of the new column/feature.
+ * @param column_name Name of the new column.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -85,22 +87,22 @@ DataFrame *DF_fromArray(double *data, int numRows, char *name);
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *      
  *      // Add a column to the existing DataFrame
- *      double newData[] = {4, 5, 6};
- *      DF_addColumn(df, newData, "feature2");
+ *      double new_data[] = {4, 5, 6};
+ *      df_column_add(df, new_data, "feature2");
  *
  *      return 0;
  * }
  */
-int DF_addColumn(DataFrame *df, double *data, char *name);
+int df_column_add(dataframe_t *df, const double *data, const char *column_name);
 
 /**
  * @brief Deletes the specified column from a DataFrame.
  *
  * @param df Pointer to the existing DataFrame to delete the column from.
- * @param name Name of the column/feature to be deleted.
+ * @param column_name Name of the column/feature to be deleted.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -114,19 +116,19 @@ int DF_addColumn(DataFrame *df, double *data, char *name);
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *      
  *      // Add a column to the existing DataFrame
- *      double newData[] = {4, 5, 6};
- *      DF_addColumn(df, newData, "feature2");
+ *      double new_data[] = {4, 5, 6};
+ *      df_column_add(df, new_data, "feature2");
  *
  *      // Delete column "feature1"
- *      DF_deleteColumn(df, "feature1")
+ *      df_column_delete(df, "feature1");
  *
  *      return 0;
  * }
  */
-int DF_deleteColumn(DataFrame *df, char *name);
+int df_column_delete(dataframe_t *df, const char *column_name);
 
 /**
  * @brief Adds a row/entry to a DataFrame.
@@ -146,20 +148,20 @@ int DF_deleteColumn(DataFrame *df, char *name);
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *      
  *      // Add a column to the existing DataFrame
- *      double newColumn[] = {4, 5, 6};
- *      DF_addColumn(df, newColumn, "feature2");
+ *      double new_column[] = {4, 5, 6};
+ *      df_column_add(df, new_column, "feature2");
  *
  *      // Add row
- *      double newRow[] = {7, 8}
- *      DF_addRow(df, newRow);
+ *      double new_row[] = {7, 8};
+ *      df_row_add(df, new_row);
  *
  *      return 0;
  * }
  */
-int DF_addRow(DataFrame *df, double *data);
+int df_row_add(dataframe_t *df, double *data);
 
 /**
  * @brief Deletes a row/entry from a DataFrame.
@@ -179,19 +181,19 @@ int DF_addRow(DataFrame *df, double *data);
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *      
  *      // Add a column to the existing DataFrame
- *      double newColumn[] = {4, 5, 6};
- *      DF_addColumn(df, newColumn, "feature2");
+ *      double new_column[] = {4, 5, 6};
+ *      df_column_add(df, new_column, "feature2");
  *
  *      // Delete row 2
- *      DF_deleteRow(df, 2);
+ *      df_row_delete(df, 2);
  *
  *      return 0;
  * }
  */
-int DF_deleteRow(DataFrame *df, double index);
+int df_row_delete(dataframe_t *df, double index);
 
 /**
  * @brief Displays the DataFrame in a table.
@@ -209,14 +211,14 @@ int DF_deleteRow(DataFrame *df, double index);
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *      
- *      DF_display(df);
+ *      df_display(df);
  *
  *      return 0;
  * }
  */
-void DF_display(DataFrame *df);
+void df_display(const dataframe_t *df);
 
 /**
  * @brief Frees all allocated memory by the DataFrame.
@@ -234,13 +236,13 @@ void DF_display(DataFrame *df);
  * int main() {
  *      // Create a DataFrame from an array
  *      double data[] = {1, 2, 3};
- *      DataFrame *df = DF_fromArray(data, 3, "feature1");
+ *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
  *      
  *      // Free DataFrame from allocated memory
- *      DF_free(df);
+ *      df_free(df);
  *
  *      return 0;
  * }
  */
-void DF_free(DataFrame *df);
+void df_free(dataframe_t *df);
 #endif

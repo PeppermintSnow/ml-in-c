@@ -211,6 +211,9 @@ int df_row_delete(dataframe_t *df, const size_t index) {
     if (index > df->n_rows - 1) 
         return DF_ERR_NONEXISTENT_ROW;
 
+    if (df->n_rows == 1)
+        return DF_ERR_LAST_ROW;
+
     double *tmp_data = malloc((df->n_rows - 1) * df->n_columns * sizeof(*df->data));
     if (!tmp_data)
         return -ENOMEM;

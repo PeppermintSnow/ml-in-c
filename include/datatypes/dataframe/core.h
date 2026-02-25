@@ -12,7 +12,9 @@ typedef enum {
     DF_ERR_NONEXISTENT_COLUMN,
     DF_ERR_NONEXISTENT_ROW,
     DF_ERR_LAST_COLUMN,
-    DF_ERR_LAST_ROW
+    DF_ERR_LAST_ROW,
+    DF_ERR_ROW_MISMATCH,
+    DF_ERR_COLUMN_MISMATCH
 } dataframe_error_t;
 
 /**
@@ -85,6 +87,7 @@ dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const
  *
  * @param df Pointer to the existing DataFrame to add the column on.
  * @param data Pointer to the source array containing the new data to be added.
+ * @param n_rows Number of rows in the data to be added.
  * @param column_name Name of the new column.
  * @return 0 on success, non-zero on failure.
  *
@@ -108,7 +111,7 @@ dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const
  *      return 0;
  * }
  */
-int df_column_add(dataframe_t *df, const double *data, const char *column_name);
+int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, const char *column_name);
 
 /**
  * @brief Deletes the specified column from a DataFrame.
@@ -147,6 +150,7 @@ int df_column_delete(dataframe_t *df, const char *column_name);
  *
  * @param df Pointer to the existing DataFrame to add the row to.
  * @param data Pointer to the source array containing the new data to be added.
+ * @param n_columns Number of column in the data to be added.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -173,7 +177,7 @@ int df_column_delete(dataframe_t *df, const char *column_name);
  *      return 0;
  * }
  */
-int df_row_add(dataframe_t *df, const double *data);
+int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
 
 /**
  * @brief Deletes a row/entry from a DataFrame.

@@ -48,7 +48,10 @@ fail:
  * Adds a new column/feature to an existing DataFrame.
  * Expands allocated memory and appends input data to the end of each row.
  */
-int df_column_add(dataframe_t *df, const double *data, const char *column_name) {
+int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, const char *column_name) {
+    if (n_rows != df->n_rows)
+        return DF_ERR_ROW_MISMATCH;
+
     for (size_t i = 0; i < df->n_columns; i++)
         if (strcmp(column_name, df->columns[i]) == 0)
             return DF_ERR_DUPLICATE_COLUMN;
@@ -175,7 +178,10 @@ fail:
 /*
  * Adds a row/entry to a DataFrame.
  */
-int df_row_add(dataframe_t *df, const double *data) {
+int df_row_add(dataframe_t *df, const double *data, const size_t n_columns) {
+    if (n_columns != df->n_columns)
+        return DF_ERR_COLUMN_MISMATCH;
+
     if (df->n_rows + 1 > SIZE_MAX / df->n_columns)
         return -ENOMEM;
 

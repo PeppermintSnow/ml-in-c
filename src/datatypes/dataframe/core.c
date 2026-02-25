@@ -69,11 +69,11 @@ int df_column_add(dataframe_t *df, const double *data, const char *column_name) 
         goto fail;
 
     for (size_t r = 0; r < df->n_rows; r++) {
-        for (size_t c = 0; c < df->n_columns; c++) {
-            // copy old to tmp with a padding at the end of each row
-            tmp_data[r * (df->n_columns + 1) + c] = df->data[r * df->n_columns + c];
-        }
-        // fill padded gaps with new data
+        memcpy(
+                &tmp_data[r * (df->n_columns + 1)],
+                &df->data[r * df->n_columns],
+                df->n_columns * sizeof(*df->data)
+              );
         tmp_data[r * (df->n_columns + 1) + df->n_columns] = data[r];
     }
 
@@ -184,8 +184,11 @@ int df_row_add(dataframe_t *df, const double *data) {
         return -ENOMEM;
 
     memcpy(tmp_data, df->data, df->n_rows * df->n_columns * sizeof(*df->data));
-    for (size_t c = 0; c < df->n_columns; c++)
-        tmp_data[df->n_rows * df->n_columns + c] = data[c];
+    memcpy(
+            &tmp_data[df->n_rows * df->n_columns],
+            data,
+            df->n_columns * sizeof(*df->data)
+          );
 
     free(df->data);
 

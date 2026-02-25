@@ -26,25 +26,6 @@ typedef enum {
  * @since 0.0.0
  * @version 0.0.0
  * @date 2025-09-14
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create from array
- *      double column1[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(column1, 3, "feature1");
- * 
- *      // Add a column
- *      double column2[] = {4, 5, 6};
- *      df_column_add(df, column2, "feature2");
- *
- *      // Free from memory
- *      df_free(df);
- *
- *      return 0;
- * }
- * @endcode
  */
 typedef struct dataframe {
     double *data;           /**< Flattened array */
@@ -67,18 +48,6 @@ typedef struct dataframe {
  * @since 0.0.0
  * @version 0.0.0
  * @date 2025-09-14
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *
- *      return 0;
- * }
- * @endcode
  */
 dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *column_name);
 
@@ -95,21 +64,6 @@ dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const
  * @since 0.0.0
  * @version 0.0.0
  * @date 2025-09-14
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *      
- *      // Add a column to the existing DataFrame
- *      double new_data[] = {4, 5, 6};
- *      df_column_add(df, new_data, "feature2");
- *
- *      return 0;
- * }
  */
 int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, const char *column_name);
 
@@ -124,24 +78,6 @@ int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, cons
  * @since 0.0.0
  * @version 0.0.0
  * @date 2026-02-20
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *      
- *      // Add a column to the existing DataFrame
- *      double new_data[] = {4, 5, 6};
- *      df_column_add(df, new_data, "feature2");
- *
- *      // Delete column "feature1"
- *      df_column_delete(df, "feature1");
- *
- *      return 0;
- * }
  */
 int df_column_delete(dataframe_t *df, const char *column_name);
 
@@ -157,25 +93,6 @@ int df_column_delete(dataframe_t *df, const char *column_name);
  * @since 0.0.0
  * @version 0.0.0
  * @date 2026-02-20
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *      
- *      // Add a column to the existing DataFrame
- *      double new_column[] = {4, 5, 6};
- *      df_column_add(df, new_column, "feature2");
- *
- *      // Add row
- *      double new_row[] = {7, 8};
- *      df_row_add(df, new_row);
- *
- *      return 0;
- * }
  */
 int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
 
@@ -190,24 +107,6 @@ int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
  * @since 0.0.0
  * @version 0.0.0
  * @date 2026-02-20
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *      
- *      // Add a column to the existing DataFrame
- *      double new_column[] = {4, 5, 6};
- *      df_column_add(df, new_column, "feature2");
- *
- *      // Delete row 2
- *      df_row_delete(df, 2);
- *
- *      return 0;
- * }
  */
 int df_row_delete(dataframe_t *df, const size_t index);
 
@@ -220,19 +119,6 @@ int df_row_delete(dataframe_t *df, const size_t index);
  * @since 0.0.0
  * @version 0.0.0
  * @date 2025-09-14
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *      
- *      df_display(df);
- *
- *      return 0;
- * }
  */
 void df_display(const dataframe_t *df);
 
@@ -245,20 +131,6 @@ void df_display(const dataframe_t *df);
  * @since 0.0.0
  * @version 0.0.0
  * @date 2025-09-14
- *
- * @code
- * #include <ml-in-c/datatypes/dataframe.h>
- *
- * int main() {
- *      // Create a DataFrame from an array
- *      double data[] = {1, 2, 3};
- *      dataframe_t *df = df_create_from_array(data, 3, "feature1");
- *      
- *      // Free DataFrame from allocated memory
- *      df_free(df);
- *
- *      return 0;
- * }
  */
 void df_free(dataframe_t *df);
 #endif

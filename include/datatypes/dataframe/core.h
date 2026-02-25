@@ -4,6 +4,18 @@
 #define DATAFRAME_CORE_H
 
 /**
+ * Error Codes
+ */
+typedef enum {
+    DF_OK = 0,
+    DF_ERR_DUPLICATE_COLUMN,
+    DF_ERR_NONEXISTENT_COLUMN,
+    DF_ERR_NONEXISTENT_ROW,
+    DF_ERR_LAST_COLUMN,
+    DF_ERR_LAST_ROW
+} dataframe_error_t;
+
+/**
  * @brief Represents a matrix with names for each column.
  *
  * Data is stored as a row-major flattened array.
@@ -66,7 +78,7 @@ typedef struct dataframe {
  * }
  * @endcode
  */
-dataframe_t *df_create_from_array(const double *data, const int n_rows, const char *column_name);
+dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *column_name);
 
 /**
  * @brief Adds a single column/feature to an existing DataFrame.

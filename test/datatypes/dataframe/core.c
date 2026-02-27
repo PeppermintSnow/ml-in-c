@@ -20,6 +20,7 @@ dataframe_t *generate_dummy_df(size_t n);
 void test_df_create_from_array();
 void test_df_column_add();
 void test_df_column_delete();
+void test_df_row_get();
 void test_df_row_add();
 void test_df_row_delete();
 
@@ -27,6 +28,7 @@ int main() {
     test_df_create_from_array();
     test_df_column_add();
     test_df_column_delete();
+    test_df_row_get();
     test_df_row_add();
     test_df_row_delete();
 }
@@ -119,6 +121,28 @@ void test_df_column_delete() {
     assert(df_column_delete(df, "baz") == DF_ERR_LAST_COLUMN);
 
     df_free(df);
+}
+
+void test_df_row_get() {
+    // Base case
+    const size_t INDEX = 3;
+    dataframe_t *df = generate_dummy_df(5);
+    dataframe_t *row3_df = df_row_get(df, INDEX);
+
+    assert(row3_df != NULL);
+    assert(row3_df->n_rows == 1);
+    assert(row3_df->n_columns == df->n_columns);
+    for (size_t i = 0; i < df->n_columns; i++) {
+        assert(strcmp(row3_df->columns[i], df->columns[i]) == 0);
+        assert(row3_df->data[i] == df->data[INDEX * df->n_columns + i]);
+    }
+
+    // Error case
+    assert(df_row_get(df, 99) == NULL);
+
+    df_free(row3_df);
+    df_free(df);
+
 }
 
 void test_df_row_add() {

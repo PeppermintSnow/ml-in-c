@@ -7,14 +7,14 @@
  * Error Codes
  */
 typedef enum {
-    DF_OK = 0,
-    DF_ERR_DUPLICATE_COLUMN,
-    DF_ERR_NONEXISTENT_COLUMN,
-    DF_ERR_NONEXISTENT_ROW,
-    DF_ERR_LAST_COLUMN,
-    DF_ERR_LAST_ROW,
-    DF_ERR_ROW_MISMATCH,
-    DF_ERR_COLUMN_MISMATCH
+    DF_OK = 0,                  /**< No errors*/
+    DF_ERR_DUPLICATE_COLUMN,    /**< Column already exists*/
+    DF_ERR_NONEXISTENT_COLUMN,  /**< Column not found*/
+    DF_ERR_NONEXISTENT_ROW,     /**< Row not found*/
+    DF_ERR_LAST_COLUMN,         /**< Cannot delete last column*/
+    DF_ERR_LAST_ROW,            /**< Cannot delete last row*/
+    DF_ERR_ROW_MISMATCH,        /**< Data length does not match df->n_rows*/
+    DF_ERR_COLUMN_MISMATCH      /**< Data length does not match df->n_columns*/
 } dataframe_error_t;
 
 /**
@@ -31,7 +31,7 @@ typedef struct dataframe {
     double *data;           /**< Flattened array */
     char **columns;         /**< Array of column names */
     size_t n_rows;          /**< Number of rows */    
-    size_t n_columns;          /**< Number of columns */
+    size_t n_columns;       /**< Number of columns */
 } dataframe_t;
 
 /**
@@ -40,7 +40,7 @@ typedef struct dataframe {
  * @param data Pointer to the source array.
  * @param n_rows Number of rows/samples in the source array.
  * @param column_name Name of the column.
- * @return Pointer to the newly created DataFrame.
+ * @return Pointer to the newly created DataFrame. NULL on error.
  * @note Caller is responsible for freeing allocated memory.
  * @see df_free() to free the DataFrame.
  *
@@ -80,6 +80,20 @@ int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, cons
  * @date 2026-02-20
  */
 int df_column_delete(dataframe_t *df, const char *column_name);
+
+/**
+ * @brief Fetch a target index from a DataFrame.
+ *
+ * @param df Pointer to the DataFrame to index.
+ * @param index Target row index to fetch.
+ * @return Cloned DataFrame containing only the target row. NULL on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-02-27
+ */
+dataframe_t *df_row_get(dataframe_t *df, const size_t index);
 
 /**
  * @brief Adds a row/entry to a DataFrame.

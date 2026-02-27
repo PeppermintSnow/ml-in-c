@@ -176,6 +176,48 @@ fail:
 }
 
 /*
+ * Fetch a row from a DataFrame.
+ */
+dataframe_t *df_row_get(dataframe_t *df, const size_t index) {
+    if (index > df->n_rows)
+        return NULL;
+
+    struct dataframe *row_df = malloc(sizeof(struct dataframe));
+    if (!row_df)
+        return NULL;
+
+    row_df->data = malloc(df->n_columns * sizeof(*df->data));
+    if (!row_df->data)
+        goto fail;
+
+    row_df->columns = malloc(df->n_columns * sizeof(*df->columns));
+    if (!row_df->columns)
+        goto fail;
+
+    memcpy(
+            row_df->data, 
+            &df->data[index * df->n_columns], 
+            df->n_columns * sizeof(*df->data)
+          );
+
+    for (size_t i = 0; i < df->n_columns; i++) {
+        row_df->columns[i] = strdup(df->columns[i]);
+        if (!row_df->columns[i])
+            goto fail;
+    }
+        
+    row_df->n_rows = 1;
+    row_df->n_columns = df->n_columns;
+
+    return row_df;
+
+fail:
+    if (row_df) 
+        df_free(row_df);
+    return NULL;
+}
+
+/*
  * Adds a row/entry to a DataFrame.
  */
 int df_row_add(dataframe_t *df, const double *data, const size_t n_columns) {

@@ -45,6 +45,51 @@ fail:
 }
 
 /**
+ * Fetch a column from a DataFrame.
+ */
+dataframe_t *df_column_get(dataframe_t *df, const char *column_name) {
+    ssize_t column_idx = -1;
+    for (size_t i = 0; i < df->n_columns; i++) {
+        if (strcmp(column_name, df->columns[i]) == 0) {
+            column_idx = i;
+            break;
+        }
+    }
+
+    if (column_idx == -1)
+        return NULL;
+    
+    struct dataframe *column_df = malloc(sizeof(struct dataframe));
+    if (!column_df)
+        return NULL;
+
+    column_df->data = malloc(df->n_rows * sizeof(*df->data));
+    if (!column_df->data)
+        goto fail;
+
+    column_df->columns = malloc(sizeof(*df->columns));
+    if (!column_df->columns)
+        goto fail;
+
+    column_df->columns[0] = strdup(df->columns[column_idx]);
+    if (!column_df->columns[0])
+        goto fail;
+
+    for (size_t r = 0; r < df->n_rows; r++)
+        column_df->data[r] = df->data[r * df->n_columns + column_idx];
+
+    column_df->n_columns = 1;
+    column_df->n_rows = df->n_rows;
+        
+    return column_df;
+
+fail:
+    if (column_df)
+        df_free(column_df);
+    return NULL;
+}
+
+/**
  * Adds a new column/feature to an existing DataFrame.
  * Expands allocated memory and appends input data to the end of each row.
  */
@@ -110,7 +155,7 @@ fail:
     return -ENOMEM;
 }
 
-/*
+/**
  * Deletes the specified column from a DataFrame.
  */
 int df_column_delete(dataframe_t *df, const char *column_name) {
@@ -175,11 +220,11 @@ fail:
     return -ENOMEM;
 }
 
-/*
+/**
  * Fetch a row from a DataFrame.
  */
-dataframe_t *df_row_get(dataframe_t *df, const size_t index) {
-    if (index > df->n_rows)
+dataframe_t *df_row_get(dataframe_t *df, const size_t row_index) {
+    if (row_index > df->n_rows)
         return NULL;
 
     struct dataframe *row_df = malloc(sizeof(struct dataframe));
@@ -196,7 +241,7 @@ dataframe_t *df_row_get(dataframe_t *df, const size_t index) {
 
     memcpy(
             row_df->data, 
-            &df->data[index * df->n_columns], 
+            &df->data[row_index * df->n_columns], 
             df->n_columns * sizeof(*df->data)
           );
 
@@ -217,7 +262,7 @@ fail:
     return NULL;
 }
 
-/*
+/**
  * Adds a row/entry to a DataFrame.
  */
 int df_row_add(dataframe_t *df, const double *data, const size_t n_columns) {
@@ -246,11 +291,11 @@ int df_row_add(dataframe_t *df, const double *data, const size_t n_columns) {
     return DF_OK;
 }
 
-/*
+/**
  * Deletes a row/entry from a DataFrame
  */
-int df_row_delete(dataframe_t *df, const size_t index) {
-    if (index > df->n_rows - 1) 
+int df_row_delete(dataframe_t *df, const size_t row_index) {
+    if (row_index > df->n_rows - 1) 
         return DF_ERR_NONEXISTENT_ROW;
 
     if (df->n_rows == 1)
@@ -261,9 +306,9 @@ int df_row_delete(dataframe_t *df, const size_t index) {
         return -ENOMEM;
 
     for (size_t r = 0; r < df->n_rows; r++) {
-        if (r == index) continue;
+        if (r == row_index) continue;
 
-        size_t r_shifted = (r > index) ? r - 1 : r;
+        size_t r_shifted = (r > row_index) ? r - 1 : r;
 
         memcpy(
                 &tmp_data[r_shifted * df->n_columns], 
@@ -280,7 +325,7 @@ int df_row_delete(dataframe_t *df, const size_t index) {
     return DF_OK;
 }
 
-/*
+/**
  * Displays the DataFrame in a table
  */
 void df_display(const dataframe_t *df) {

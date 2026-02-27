@@ -18,6 +18,7 @@ double *generate_dummy_data(size_t n);
 dataframe_t *generate_dummy_df(size_t n);
 
 void test_df_create_from_array();
+void test_df_column_get();
 void test_df_column_add();
 void test_df_column_delete();
 void test_df_row_get();
@@ -26,6 +27,7 @@ void test_df_row_delete();
 
 int main() {
     test_df_create_from_array();
+    test_df_column_get();
     test_df_column_add();
     test_df_column_delete();
     test_df_row_get();
@@ -45,13 +47,16 @@ double *generate_dummy_data(size_t n) {
 }
 
 dataframe_t *generate_dummy_df(size_t n) {
-    double data[n];
-    for (size_t i = 0; i < n; i++)
-        data[i] = i;
+    double foo[n], bar[n], baz[n];
+    for (size_t i = 0; i < n; i++) {
+        foo[i] = i;
+        bar[i] = i * 2;
+        baz[i] = i * 3;
+    }
 
-    dataframe_t *df = df_create_from_array(data, n, "foo");
-    df_column_add(df, data, n, "bar");
-    df_column_add(df, data, n, "baz");
+    dataframe_t *df = df_create_from_array(foo, n, "foo");
+    df_column_add(df, bar, n, "bar");
+    df_column_add(df, baz, n, "baz");
 
     return df;
 }
@@ -75,6 +80,26 @@ void test_df_create_from_array() {
     assert(df_create_from_array(data, SIZE, NULL) == NULL);
 
     free(data);
+}
+
+void test_df_column_get() {
+    // Base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    dataframe_t *column_df = df_column_get(df, "bar");
+    
+    assert(column_df != NULL);
+    assert(column_df->n_columns == 1);
+    assert(column_df->n_rows == df->n_rows);
+    assert(strcmp(column_df->columns[0], "bar") == 0);
+    for (size_t i = 0; i < column_df->n_rows; i++) {
+        assert(column_df->data[i] == df->data[i * df->n_columns + 1]);
+    }
+
+    // Error cases
+    assert(df_column_get(df, "bax") == NULL);
+
+    free(column_df);
+    free(df);
 }
 
 void test_df_column_add() {

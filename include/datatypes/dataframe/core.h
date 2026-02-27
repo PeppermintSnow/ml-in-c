@@ -52,6 +52,20 @@ typedef struct dataframe {
 dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *column_name);
 
 /**
+ * @brief Fetch a target column from a DataFrame.
+ *
+ * @param df Pointer to the DataFrame to index.
+ * @param column_name Target column to fetch.
+ * @return Cloned DataFrame containing only the target column. NULL on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-02-27
+ */
+dataframe_t *df_column_get(dataframe_t *df, const char *column_name);
+
+/**
  * @brief Adds a single column/feature to an existing DataFrame.
  *
  * @param df Pointer to the existing DataFrame to add the column on.
@@ -85,7 +99,7 @@ int df_column_delete(dataframe_t *df, const char *column_name);
  * @brief Fetch a target index from a DataFrame.
  *
  * @param df Pointer to the DataFrame to index.
- * @param index Target row index to fetch.
+ * @param row_index Target row index to fetch.
  * @return Cloned DataFrame containing only the target row. NULL on error.
  *
  * @author PeppermintSnow
@@ -93,7 +107,7 @@ int df_column_delete(dataframe_t *df, const char *column_name);
  * @version 0.0.0
  * @date 2026-02-27
  */
-dataframe_t *df_row_get(dataframe_t *df, const size_t index);
+dataframe_t *df_row_get(dataframe_t *df, const size_t row_index);
 
 /**
  * @brief Adds a row/entry to a DataFrame.
@@ -114,7 +128,7 @@ int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
  * @brief Deletes a row/entry from a DataFrame.
  *
  * @param df Pointer to the existing DataFrame to remove the row from.
- * @param index Index of the row to be deleted.
+ * @param row_index Index of the row to be deleted.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -122,7 +136,7 @@ int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
  * @version 0.0.0
  * @date 2026-02-20
  */
-int df_row_delete(dataframe_t *df, const size_t index);
+int df_row_delete(dataframe_t *df, const size_t row_index);
 
 /**
  * @brief Displays the DataFrame in a table.

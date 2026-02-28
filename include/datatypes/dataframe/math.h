@@ -1,7 +1,7 @@
-#include "./core.h"
-
 #ifndef DATAFRAME_MATH_H
 #define DATAFRAME_MATH_H
+
+#include "./core.h"
 
 /**
  * @brief Performs row-wise addition of col1 to col2.
@@ -122,5 +122,89 @@ double *df_col_mul_s(dataframe_t *df, const char *col, const double scalar);
  * @date 2026-03-01
  */
 double *df_col_div_s(dataframe_t *df, const char *col, const double scalar);
+
+/**
+ * @brief Computes the mean of the target column.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param col Name of the target column.
+ * @return Mean value. NAN on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+double df_col_mean(dataframe_t *df, const char *col);
+
+/**
+ * @brief Computes the sum of the target column.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param col Name of the target column.
+ * @return Sum of all rows. NAN on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+double df_col_sum(dataframe_t *df, const char *col);
+
+/**
+ * @brief Finds the minimum value in the target column.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param col Name of the target column.
+ * @return Minimum value. NAN on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+double df_col_min(dataframe_t *df, const char *col);
+
+/**
+ * @brief Finds the maximum value in the target column.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param col Name of the target column.
+ * @return Maximum value. NAN on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+double df_col_max(dataframe_t *df, const char *col);
+
+/**
+ * @brief Computes the population variance of the target column.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param col Name of the target column.
+ * @return Population variance. NAN on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+double df_col_var(dataframe_t *df, const char *col);
+
+/**
+ * @brief Computes the standard deviation of the target column.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param col Name of the target column.
+ * @return Standard deviation. NAN on error.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+double df_col_std(dataframe_t *df, const char *col);
 
 #endif

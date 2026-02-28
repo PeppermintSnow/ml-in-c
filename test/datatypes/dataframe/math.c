@@ -1,6 +1,7 @@
 #include "../../../include/datatypes/dataframe/core.h"
 #include "../../../include/datatypes/dataframe/math.h"
 #include <assert.h>
+#include <math.h>
 #include <stdlib.h>
 
 #define SIZE 1000
@@ -96,5 +97,123 @@ void test_df_col_arithmetic_s(
 
     free(foo);
     free(data);
+    df_free(df);
+}
+
+void test_df_col_sum() {
+    // base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    double data = df_col_sum(df, "foo");
+
+    double sum = 0;
+    for (size_t i = 0; i < df->n_rows; i++)
+        sum += df->data[i * df->n_cols];
+
+    assert(fabs(data - sum) < 1e-6);
+
+    // error case
+    assert(isnan(df_col_sum(df, "qux")));
+
+    df_free(df);
+}
+
+void test_df_col_mean() {
+    // base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    double data = df_col_mean(df, "foo");
+
+    double mean = 0;
+    for (size_t i = 0; i < df->n_rows; i++)
+        mean += df->data[i * df->n_cols];
+    mean /= df->n_rows;
+
+    assert(fabs(data - mean) < 1e-6);
+
+    // error case
+    assert(isnan(df_col_mean(df, "qux")));
+
+    df_free(df);
+}
+
+void test_df_col_min() {
+    // base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    double data = df_col_min(df, "foo");
+
+    double min = df->data[0];
+    for (size_t i = 1; i < df->n_rows; i++)
+        if (min > df->data[i * df->n_cols])
+            min = df->data[i * df->n_cols];
+
+    assert(min == data);
+
+    // error case
+    assert(isnan(df_col_min(df, "qux")));
+
+    df_free(df);
+}
+
+void test_df_col_max() {
+    // base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    double data = df_col_min(df, "foo");
+
+    double max = df->data[0];
+    for (size_t i = 1; i < df->n_rows; i++)
+        if (max < df->data[i * df->n_cols])
+            max = df->data[i * df->n_cols];
+
+    assert(max == data);
+
+    // error case
+    assert(isnan(df_col_max(df, "qux")));
+
+    df_free(df);
+}
+
+void test_df_col_var() {
+    // base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    double data = df_col_var(df, "foo");
+
+    double mean = 0;
+    for (size_t r = 0; r < df->n_rows; r++)
+        mean += df->data[r * df->n_cols];
+    mean /= df->n_rows;
+
+    double var = 0;
+    for (size_t i = 0; i < df->n_rows; i++)
+        var += pow(df->data[i * df->n_rows], 2);
+    var /= df->n_rows;
+
+    assert(var == data);
+
+    // error case
+    assert(isnan(df_col_var(df, "qux")));
+
+    df_free(df);
+}
+
+void test_df_col_stda() {
+    // base case
+    dataframe_t *df = generate_dummy_df(SIZE);
+    double data = df_col_var(df, "foo");
+
+    double mean = 0;
+    for (size_t r = 0; r < df->n_rows; r++)
+        mean += df->data[r * df->n_cols];
+    mean /= df->n_rows;
+
+    double var = 0;
+    for (size_t i = 0; i < df->n_rows; i++)
+        var += pow(df->data[i * df->n_rows], 2);
+    var /= df->n_rows;
+
+    double std = sqrt(var);
+    assert(std == data);
+
+    // error case
+    assert(isnan(df_col_std(df, "qux")));
+
     df_free(df);
 }

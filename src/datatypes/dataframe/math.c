@@ -1,56 +1,11 @@
 #include "../../../include/datatypes/dataframe/core.h"
+#include "../../../include/datatypes/dataframe/math_internal.h"
 #include "../../../include/datatypes/dataframe/math.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/**
- * inline col-to-col helper to comply with DRY
- */
-static inline double *df_col_arithmetic(
-    dataframe_t *df, 
-    const char *col1, 
-    const char *col2,
-    char operation
-) {
-    ssize_t col1_idx = -1, col2_idx = -1;
-    for (size_t i = 0; i < df->n_cols; i++) {
-        if (col1_idx == -1 && strcmp(df->columns[i], col1) == 0)
-            col1_idx = i;
-        if (col2_idx == -1 && strcmp(df->columns[i], col2) == 0)
-            col2_idx = i;
-        if (col1_idx != -1 && col2_idx != -1)
-            break;
-    }
-
-    if (col1_idx == -1 || col2_idx == -1)
-        return NULL;
-
-    double *res = malloc(df->n_rows * sizeof(double));
-    if (!res)
-        return NULL;
-
-    for (size_t r = 0; r < df->n_rows; r++) {
-        double a = df->data[r * df->n_cols + col1_idx];
-        double b = df->data[r * df->n_cols + col2_idx];
-        switch (operation) {
-            case '+':
-                res[r] = a + b;
-                break;
-            case '-':
-                res[r] = a - b;
-                break;
-            case '*':
-                res[r] = a * b;
-                break;
-            case '/':
-                res[r] = b == 0 ? 0 : a / b;
-                break;
-        }
-    }
-
-    return res;
-}
 
 double *df_col_add(dataframe_t *df, const char *col1, const char *col2) {
     return df_col_arithmetic(df, col1, col2, '+');
@@ -68,51 +23,6 @@ double *df_col_div(dataframe_t *df, const char *col1, const char *col2) {
     return df_col_arithmetic(df, col1, col2, '/');
 }
 
-/**
- * inline col-to-scalar helper to comply with DRY
- */
-static inline double *df_col_arithmetic_s(
-    dataframe_t *df, 
-    const char *col, 
-    double scalar,
-    char operation
-) {
-    ssize_t col_idx = -1;
-    for (size_t i = 0; i < df->n_cols; i++) {
-        if (col_idx == -1 && strcmp(df->columns[i], col) == 0) {
-            col_idx = i;
-            break;
-        }
-    }
-
-    if (col_idx == -1)
-        return NULL;
-
-    double *res = malloc(df->n_rows * sizeof(double));
-    if (!res)
-        return NULL;
-
-    for (size_t r = 0; r < df->n_rows; r++) {
-        double a = df->data[r * df->n_cols + col_idx];
-        switch (operation) {
-            case '+':
-                res[r] = a + scalar;
-                break;
-            case '-':
-                res[r] = a - scalar;
-                break;
-            case '*':
-                res[r] = a * scalar;
-                break;
-            case '/':
-                res[r] = scalar == 0 ? 0 : a / scalar;
-                break;
-        }
-    }
-
-    return res;
-}
-
 double *df_col_add_s(dataframe_t *df, const char *col, const double scalar) {
     return df_col_arithmetic_s(df, col, scalar, '+');
 }
@@ -127,4 +37,78 @@ double *df_col_mul_s(dataframe_t *df, const char *col, const double scalar) {
 
 double *df_col_div_s(dataframe_t *df, const char *col, const double scalar) {
     return df_col_arithmetic_s(df, col, scalar, '/');
+}
+
+double df_col_mean(dataframe_t *df, const char *col) {
+    size_t col_idx = df_col_idx(df, col);
+    if (col_idx == (size_t)-1)
+        return NAN;
+
+    double mean = 0;
+    for (size_t r = 0; r < df->n_rows; r++)
+        mean += df->data[r * df->n_cols + col_idx];
+    mean /= df->n_rows;
+
+    return mean;
+}
+
+double df_col_sum(dataframe_t *df, const char *col) {
+    size_t col_idx = df_col_idx(df, col);
+    if (col_idx == (size_t)-1)
+        return NAN;
+
+    double sum = 0;
+    for (size_t r = 0; r < df->n_rows; r++)
+        sum += df->data[r * df->n_cols + col_idx];
+
+    return sum;
+}
+
+double df_col_min(dataframe_t *df, const char *col) {
+    size_t col_idx = df_col_idx(df, col);
+    if (col_idx == (size_t)-1)
+        return NAN;
+
+    double min = df->data[col_idx];
+    for (size_t r = 1; r < df->n_rows; r++)
+        if (min > df->data[r * df->n_cols + col_idx])
+            min = df->data[r * df->n_cols + col_idx];
+
+    return min;
+}
+
+double df_col_max(dataframe_t *df, const char *col) {
+    size_t col_idx = df_col_idx(df, col);
+    if (col_idx == (size_t)-1)
+        return NAN;
+
+    double max = df->data[col_idx];
+    for (size_t r = 1; r < df->n_rows; r++)
+        if (max < df->data[r * df->n_cols + col_idx])
+            max = df->data[r * df->n_cols + col_idx];
+
+    return max;
+}
+
+double df_col_var(dataframe_t *df, const char *col) {
+    size_t col_idx = df_col_idx(df, col);
+    if (col_idx == (size_t)-1)
+        return NAN;
+    
+    double mean = df_col_mean(df, col);
+    double var = 0;
+    
+    for (size_t r = 0; r < df->n_rows; r++)
+        var += pow(df->data[r * df->n_cols + col_idx] - mean, 2);
+    var /= df->n_rows;
+
+    return var;
+}
+
+double df_col_std(dataframe_t *df, const char *col) {
+    size_t col_idx = df_col_idx(df, col);
+    if (col_idx == (size_t)-1)
+        return NAN;
+
+    return sqrt(df_col_var(df, col));
 }

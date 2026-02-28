@@ -1,8 +1,4 @@
-#ifdef _WIN32
-    #include ".\\core.h"
-#else
-    #include "./core.h"
-#endif
+#include "./core.h"
 
 #ifndef DATAFRAME_MATH_H
 #define DATAFRAME_MATH_H

@@ -1,4 +1,5 @@
 #include "../../../include/datatypes/dataframe/core.h"
+#include "../../../include/datatypes/dataframe/math.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

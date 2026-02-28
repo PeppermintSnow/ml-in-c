@@ -1,13 +1,9 @@
+#include "../../../include/datatypes/dataframe/core.h"
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef _WIN32
-    #include "..\\..\\..\\include\\datatypes\\dataframe\\core.h"
-#else
-    #include "../../../include/datatypes/dataframe/core.h"
-#endif
 
 /**
  * Creates a DataFrame with one feature/column from an array.

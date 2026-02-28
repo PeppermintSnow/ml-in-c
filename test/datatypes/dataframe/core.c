@@ -1,11 +1,10 @@
+#include "../../../include/datatypes/dataframe/core.h"
 #include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "../../../include/datatypes/dataframe/core.h"
 
 #define LEN(arr) (sizeof(arr) / sizeof(arr[0]))
 #define SIZE 1000

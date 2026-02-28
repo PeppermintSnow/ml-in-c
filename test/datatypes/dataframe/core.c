@@ -5,11 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef _WIN32
-    #include "..\\..\\..\\include\\datatypes\\dataframe\\core.h"
-#else
-    #include "../../../include/datatypes/dataframe/core.h"
-#endif
+#include "../../../include/datatypes/dataframe/core.h"
 
 #define LEN(arr) (sizeof(arr) / sizeof(arr[0]))
 #define SIZE 1000

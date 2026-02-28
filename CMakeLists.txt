@@ -10,6 +10,8 @@ target_include_directories(ml_in_c PUBLIC
     ${PROJECT_SOURCE_DIR}/include
 )
 
+target_link_libraries(ml_in_c PUBLIC m)
+
 add_subdirectory(src)
 add_subdirectory(test)
 

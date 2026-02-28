@@ -31,7 +31,7 @@ typedef struct dataframe {
     double *data;           /**< Flattened array */
     char **columns;         /**< Array of column names */
     size_t n_rows;          /**< Number of rows */    
-    size_t n_columns;       /**< Number of columns */
+    size_t n_cols;          /**< Number of columns */
 } dataframe_t;
 
 /**
@@ -39,7 +39,7 @@ typedef struct dataframe {
  *
  * @param data Pointer to the source array.
  * @param n_rows Number of rows/samples in the source array.
- * @param column_name Name of the column.
+ * @param col_name Name of the column.
  * @return Pointer to the newly created DataFrame. NULL on error.
  * @note Caller is responsible for freeing allocated memory.
  * @see df_free() to free the DataFrame.
@@ -49,13 +49,13 @@ typedef struct dataframe {
  * @version 0.0.0
  * @date 2025-09-14
  */
-dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *column_name);
+dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *col_name);
 
 /**
  * @brief Fetch a target column from a DataFrame.
  *
  * @param df Pointer to the DataFrame to index.
- * @param column_name Target column to fetch.
+ * @param col_name Target column to fetch.
  * @return Cloned DataFrame containing only the target column. NULL on error.
  *
  * @author PeppermintSnow
@@ -63,7 +63,7 @@ dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const
  * @version 0.0.0
  * @date 2026-02-27
  */
-dataframe_t *df_column_get(dataframe_t *df, const char *column_name);
+dataframe_t *df_col_get(dataframe_t *df, const char *col_name);
 
 /**
  * @brief Adds a single column/feature to an existing DataFrame.
@@ -71,7 +71,7 @@ dataframe_t *df_column_get(dataframe_t *df, const char *column_name);
  * @param df Pointer to the existing DataFrame to add the column on.
  * @param data Pointer to the source array containing the new data to be added.
  * @param n_rows Number of rows in the data to be added.
- * @param column_name Name of the new column.
+ * @param col_name Name of the new column.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -79,13 +79,13 @@ dataframe_t *df_column_get(dataframe_t *df, const char *column_name);
  * @version 0.0.0
  * @date 2025-09-14
  */
-int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, const char *column_name);
+int df_col_append(dataframe_t *df, const double *data, const size_t n_rows, const char *col_name);
 
 /**
  * @brief Deletes the specified column from a DataFrame.
  *
  * @param df Pointer to the existing DataFrame to delete the column from.
- * @param column_name Name of the column/feature to be deleted.
+ * @param col_name Name of the column/feature to be deleted.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -93,7 +93,7 @@ int df_column_add(dataframe_t *df, const double *data, const size_t n_rows, cons
  * @version 0.0.0
  * @date 2026-02-20
  */
-int df_column_delete(dataframe_t *df, const char *column_name);
+int df_col_drop(dataframe_t *df, const char *col_name);
 
 /**
  * @brief Fetch a target index from a DataFrame.

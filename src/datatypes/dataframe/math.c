@@ -5,7 +5,7 @@
 #include <string.h>
 
 /**
- * inline helper to comply with DRY
+ * inline col-to-col helper to comply with DRY
  */
 static inline double *df_col_arithmetic(
     dataframe_t *df, 
@@ -66,4 +66,65 @@ double *df_col_mul(dataframe_t *df, const char *col1, const char *col2) {
 
 double *df_col_div(dataframe_t *df, const char *col1, const char *col2) {
     return df_col_arithmetic(df, col1, col2, '/');
+}
+
+/**
+ * inline col-to-scalar helper to comply with DRY
+ */
+static inline double *df_col_arithmetic_s(
+    dataframe_t *df, 
+    const char *col, 
+    double scalar,
+    char operation
+) {
+    ssize_t col_idx = -1;
+    for (size_t i = 0; i < df->n_cols; i++) {
+        if (col_idx == -1 && strcmp(df->columns[i], col) == 0) {
+            col_idx = i;
+            break;
+        }
+    }
+
+    if (col_idx == -1)
+        return NULL;
+
+    double *res = malloc(df->n_rows * sizeof(double));
+    if (!res)
+        return NULL;
+
+    for (size_t r = 0; r < df->n_rows; r++) {
+        double a = df->data[r * df->n_cols + col_idx];
+        switch (operation) {
+            case '+':
+                res[r] = a + scalar;
+                break;
+            case '-':
+                res[r] = a - scalar;
+                break;
+            case '*':
+                res[r] = a * scalar;
+                break;
+            case '/':
+                res[r] = scalar == 0 ? 0 : a / scalar;
+                break;
+        }
+    }
+
+    return res;
+}
+
+double *df_col_add_s(dataframe_t *df, const char *col, const double scalar) {
+    return df_col_arithmetic_s(df, col, scalar, '+');
+}
+
+double *df_col_sub_s(dataframe_t *df, const char *col, const double scalar) {
+    return df_col_arithmetic_s(df, col, scalar, '-');
+}
+
+double *df_col_mul_s(dataframe_t *df, const char *col, const double scalar) {
+    return df_col_arithmetic_s(df, col, scalar, '*');
+}
+
+double *df_col_div_s(dataframe_t *df, const char *col, const double scalar) {
+    return df_col_arithmetic_s(df, col, scalar, '/');
 }

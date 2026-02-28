@@ -7,10 +7,23 @@
 
 dataframe_t *generate_dummy_df(size_t n);
 
-void test_df_col_add();
+void test_df_col_arithmetic(
+    double *(*df_func)(dataframe_t *, const char *, const char *), 
+    double (*func)(double, double)
+);
+
+double add(double a, double b) { return a + b; }
+double sub(double a, double b) { return a - b; }
+double mul(double a, double b) { return a * b; }
+double divi(double a, double b) { 
+    return b == 0 ? 0 : a / b; 
+}
 
 int main() {
-    test_df_col_add();
+    test_df_col_arithmetic(df_col_add, add);
+    test_df_col_arithmetic(df_col_sub, sub);
+    test_df_col_arithmetic(df_col_mul, mul);
+    test_df_col_arithmetic(df_col_div, divi);
 }
 
 dataframe_t *generate_dummy_df(size_t n) {
@@ -28,21 +41,24 @@ dataframe_t *generate_dummy_df(size_t n) {
     return df;
 }
 
-void test_df_col_add() {
+void test_df_col_arithmetic(
+    double *(*df_func)(dataframe_t *, const char *, const char *), 
+    double (*func)(double, double)
+) {
     // base case
     dataframe_t *df = generate_dummy_df(SIZE);
-    double *data = df_col_add(df, "foo", "bar");
+    double *data = df_func(df, "foo", "bar");
     double *foo = df_col_get(df, "foo");
     double *bar = df_col_get(df, "bar");
 
     assert(data != NULL);
     for (size_t r = 0; r < df->n_rows; r++)
-        assert(data[r] == foo[r] + bar[r]);
+        assert(data[r] == func(foo[r], bar[r]));
 
     // error case
-    assert(df_col_add(df, "foo", "qux") == NULL);
-    assert(df_col_add(df, "qux", "foo") == NULL);
-    assert(df_col_add(df, "qux", "qux") == NULL);
+    assert(df_func(df, "foo", "qux") == NULL);
+    assert(df_func(df, "qux", "foo") == NULL);
+    assert(df_func(df, "qux", "qux") == NULL);
 
     free(data);
     free(bar);

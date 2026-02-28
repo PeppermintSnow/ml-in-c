@@ -63,7 +63,7 @@ dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const
  * @version 0.0.0
  * @date 2026-02-27
  */
-dataframe_t *df_col_get(dataframe_t *df, const char *col_name);
+double *df_col_get(dataframe_t *df, const char *col_name);
 
 /**
  * @brief Adds a single column/feature to an existing DataFrame.
@@ -107,7 +107,7 @@ int df_col_drop(dataframe_t *df, const char *col_name);
  * @version 0.0.0
  * @date 2026-02-27
  */
-dataframe_t *df_row_get(dataframe_t *df, const size_t row_index);
+double *df_row_get(dataframe_t *df, const size_t row_index);
 
 /**
  * @brief Adds a row/entry to a DataFrame.

@@ -47,7 +47,7 @@ fail:
 /**
  * Fetch a column from a DataFrame.
  */
-dataframe_t *df_col_get(dataframe_t *df, const char *col_name) {
+double *df_col_get(dataframe_t *df, const char *col_name) {
     ssize_t col_idx = -1;
     for (size_t i = 0; i < df->n_cols; i++) {
         if (strcmp(col_name, df->columns[i]) == 0) {
@@ -59,34 +59,14 @@ dataframe_t *df_col_get(dataframe_t *df, const char *col_name) {
     if (col_idx == -1)
         return NULL;
     
-    struct dataframe *col_df = malloc(sizeof(struct dataframe));
-    if (!col_df)
+    double *col_data = malloc(df->n_rows * sizeof(double));
+    if (!col_data)
         return NULL;
 
-    col_df->data = malloc(df->n_rows * sizeof(*df->data));
-    if (!col_df->data)
-        goto fail;
-
-    col_df->columns = malloc(sizeof(*df->columns));
-    if (!col_df->columns)
-        goto fail;
-
-    col_df->columns[0] = strdup(df->columns[col_idx]);
-    if (!col_df->columns[0])
-        goto fail;
-
     for (size_t r = 0; r < df->n_rows; r++)
-        col_df->data[r] = df->data[r * df->n_cols + col_idx];
-
-    col_df->n_cols = 1;
-    col_df->n_rows = df->n_rows;
+        col_data[r] = df->data[r * df->n_cols + col_idx];
         
-    return col_df;
-
-fail:
-    if (col_df)
-        df_free(col_df);
-    return NULL;
+    return col_data;
 }
 
 /**
@@ -223,43 +203,21 @@ fail:
 /**
  * Fetch a row from a DataFrame.
  */
-dataframe_t *df_row_get(dataframe_t *df, const size_t row_index) {
+double *df_row_get(dataframe_t *df, const size_t row_index) {
     if (row_index > df->n_rows)
         return NULL;
 
-    struct dataframe *row_df = malloc(sizeof(struct dataframe));
-    if (!row_df)
+    double *row_data = malloc(sizeof(struct dataframe));
+    if (!row_data)
         return NULL;
 
-    row_df->data = malloc(df->n_cols * sizeof(*df->data));
-    if (!row_df->data)
-        goto fail;
-
-    row_df->columns = malloc(df->n_cols * sizeof(*df->columns));
-    if (!row_df->columns)
-        goto fail;
-
     memcpy(
-            row_df->data, 
+            row_data,
             &df->data[row_index * df->n_cols], 
             df->n_cols * sizeof(*df->data)
           );
 
-    for (size_t i = 0; i < df->n_cols; i++) {
-        row_df->columns[i] = strdup(df->columns[i]);
-        if (!row_df->columns[i])
-            goto fail;
-    }
-        
-    row_df->n_rows = 1;
-    row_df->n_cols = df->n_cols;
-
-    return row_df;
-
-fail:
-    if (row_df) 
-        df_free(row_df);
-    return NULL;
+    return row_data;
 }
 
 /**

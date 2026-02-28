@@ -17,7 +17,7 @@
 double *generate_dummy_data(size_t n);
 dataframe_t *generate_dummy_df(size_t n);
 
-void test_df_create_from_array();
+void test_df_from_array();
 void test_df_col_get();
 void test_df_col_append();
 void test_df_col_drop();
@@ -26,7 +26,7 @@ void test_df_row_append();
 void test_df_row_drop();
 
 int main() {
-    test_df_create_from_array();
+    test_df_from_array();
     test_df_col_get();
     test_df_col_append();
     test_df_col_drop();
@@ -54,17 +54,17 @@ dataframe_t *generate_dummy_df(size_t n) {
         baz[i] = i * 3;
     }
 
-    dataframe_t *df = df_create_from_array(foo, n, "foo");
+    dataframe_t *df = df_from_array(foo, n, "foo");
     df_col_append(df, bar, n, "bar");
     df_col_append(df, baz, n, "baz");
 
     return df;
 }
 
-void test_df_create_from_array() {
+void test_df_from_array() {
     // Base case
     double *data = generate_dummy_data(SIZE);
-    dataframe_t *df = df_create_from_array(data, SIZE, "foo");
+    dataframe_t *df = df_from_array(data, SIZE, "foo");
 
     assert(df != NULL);
     assert(df->n_cols == 1);
@@ -75,9 +75,9 @@ void test_df_create_from_array() {
     df_free(df);
 
     // Error cases
-    assert(df_create_from_array(NULL, 0, NULL) == NULL);
-    assert(df_create_from_array(data, 0, "bar") == NULL);
-    assert(df_create_from_array(data, SIZE, NULL) == NULL);
+    assert(df_from_array(NULL, 0, NULL) == NULL);
+    assert(df_from_array(data, 0, "bar") == NULL);
+    assert(df_from_array(data, SIZE, NULL) == NULL);
 
     free(data);
 }
@@ -101,7 +101,7 @@ void test_df_col_get() {
 void test_df_col_append() {
     // Base case
     double *data = generate_dummy_data(SIZE);
-    dataframe_t *df = df_create_from_array(data, SIZE, "foo");
+    dataframe_t *df = df_from_array(data, SIZE, "foo");
 
     df_col_append(df, data, SIZE, "bar");
     df_col_append(df, data, SIZE, "baz");

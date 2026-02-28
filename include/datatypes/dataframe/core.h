@@ -49,7 +49,7 @@ typedef struct dataframe {
  * @version 0.0.0
  * @date 2025-09-14
  */
-dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *col_name);
+dataframe_t *df_from_array(const double *data, const size_t n_rows, const char *col_name);
 
 /**
  * @brief Fetch a target column from a DataFrame.

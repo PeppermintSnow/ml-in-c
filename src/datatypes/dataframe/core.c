@@ -13,7 +13,7 @@
  * Creates a DataFrame with one feature/column from an array.
  * Allocates memory and copies input into the struct.
  */
-dataframe_t *df_create_from_array(const double *data, const size_t n_rows, const char *col_name) {
+dataframe_t *df_from_array(const double *data, const size_t n_rows, const char *col_name) {
     if (data == NULL || col_name == NULL || n_rows == 0 || n_rows > SIZE_MAX / sizeof(*data))
         return NULL;
 

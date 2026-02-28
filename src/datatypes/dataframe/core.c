@@ -73,7 +73,7 @@ double *df_col_get(dataframe_t *df, const char *col_name) {
  * Adds a new column/feature to an existing DataFrame.
  * Expands allocated memory and appends input data to the end of each row.
  */
-int df_col_add(dataframe_t *df, const double *data, const size_t n_rows, const char *col_name) {
+int df_col_append(dataframe_t *df, const double *data, const size_t n_rows, const char *col_name) {
     if (n_rows != df->n_rows)
         return DF_ERR_ROW_MISMATCH;
 
@@ -138,7 +138,7 @@ fail:
 /**
  * Deletes the specified column from a DataFrame.
  */
-int df_col_delete(dataframe_t *df, const char *col_name) {
+int df_col_drop(dataframe_t *df, const char *col_name) {
     ssize_t col_idx = -1;
     for (size_t i = 0; i < df->n_cols; i++) {
         if (strcmp(col_name, df->columns[i]) == 0) {
@@ -203,8 +203,8 @@ fail:
 /**
  * Fetch a row from a DataFrame.
  */
-double *df_row_get(dataframe_t *df, const size_t row_index) {
-    if (row_index > df->n_rows)
+double *df_row_get(dataframe_t *df, const size_t row_idx) {
+    if (row_idx > df->n_rows)
         return NULL;
 
     double *row_data = malloc(sizeof(struct dataframe));
@@ -213,7 +213,7 @@ double *df_row_get(dataframe_t *df, const size_t row_index) {
 
     memcpy(
             row_data,
-            &df->data[row_index * df->n_cols], 
+            &df->data[row_idx * df->n_cols], 
             df->n_cols * sizeof(*df->data)
           );
 
@@ -223,7 +223,7 @@ double *df_row_get(dataframe_t *df, const size_t row_index) {
 /**
  * Adds a row/entry to a DataFrame.
  */
-int df_row_add(dataframe_t *df, const double *data, const size_t n_cols) {
+int df_row_append(dataframe_t *df, const double *data, const size_t n_cols) {
     if (n_cols != df->n_cols)
         return DF_ERR_COLUMN_MISMATCH;
 
@@ -252,8 +252,8 @@ int df_row_add(dataframe_t *df, const double *data, const size_t n_cols) {
 /**
  * Deletes a row/entry from a DataFrame
  */
-int df_row_delete(dataframe_t *df, const size_t row_index) {
-    if (row_index > df->n_rows - 1) 
+int df_row_drop(dataframe_t *df, const size_t row_idx) {
+    if (row_idx > df->n_rows - 1) 
         return DF_ERR_NONEXISTENT_ROW;
 
     if (df->n_rows == 1)
@@ -264,9 +264,9 @@ int df_row_delete(dataframe_t *df, const size_t row_index) {
         return -ENOMEM;
 
     for (size_t r = 0; r < df->n_rows; r++) {
-        if (r == row_index) continue;
+        if (r == row_idx) continue;
 
-        size_t r_shifted = (r > row_index) ? r - 1 : r;
+        size_t r_shifted = (r > row_idx) ? r - 1 : r;
 
         memcpy(
                 &tmp_data[r_shifted * df->n_cols], 

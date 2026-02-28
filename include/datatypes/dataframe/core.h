@@ -99,7 +99,7 @@ int df_col_drop(dataframe_t *df, const char *col_name);
  * @brief Fetch a target index from a DataFrame.
  *
  * @param df Pointer to the DataFrame to index.
- * @param row_index Target row index to fetch.
+ * @param row_idx Target row index to fetch.
  * @return Cloned DataFrame containing only the target row. NULL on error.
  *
  * @author PeppermintSnow
@@ -107,7 +107,7 @@ int df_col_drop(dataframe_t *df, const char *col_name);
  * @version 0.0.0
  * @date 2026-02-27
  */
-double *df_row_get(dataframe_t *df, const size_t row_index);
+double *df_row_get(dataframe_t *df, const size_t row_idx);
 
 /**
  * @brief Adds a row/entry to a DataFrame.
@@ -122,13 +122,13 @@ double *df_row_get(dataframe_t *df, const size_t row_index);
  * @version 0.0.0
  * @date 2026-02-20
  */
-int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
+int df_row_append(dataframe_t *df, const double *data, const size_t n_columns);
 
 /**
  * @brief Deletes a row/entry from a DataFrame.
  *
  * @param df Pointer to the existing DataFrame to remove the row from.
- * @param row_index Index of the row to be deleted.
+ * @param row_idx Index of the row to be deleted.
  * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
@@ -136,7 +136,7 @@ int df_row_add(dataframe_t *df, const double *data, const size_t n_columns);
  * @version 0.0.0
  * @date 2026-02-20
  */
-int df_row_delete(dataframe_t *df, const size_t row_index);
+int df_row_drop(dataframe_t *df, const size_t row_idx);
 
 /**
  * @brief Displays the DataFrame in a table.

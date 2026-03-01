@@ -310,11 +310,16 @@ void df_free(dataframe_t *df) {
     if (!df) 
         return;
 
-    free(df->data);
-    if (df->columns)
+    if (df->data)
+        free(df->data);
+
+    if (df->columns) {
         for (size_t i = 0; i < df->n_cols; i++)
-            free(df->columns[i]);
-    free(df->columns);
+            if (df->columns[i])
+                free(df->columns[i]);
+        free(df->columns);
+    }
+
     free(df);
 }
 

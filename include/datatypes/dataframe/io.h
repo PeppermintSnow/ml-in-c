@@ -7,6 +7,7 @@
  * @brief Instantiates a DataFrame containing data from a CSV file.
  *
  * @param path Path to CSV file.
+ * @param err_out Optional pointer to receive the error code.
  * @return DataFrame with data from the CSV. NULL on error.
  *
  * @author PeppermintSnow
@@ -14,7 +15,7 @@
  * @version 0.0.0
  * @date 2026-03-01
  */
-dataframe_t *df_read_csv(char *path);
+dataframe_t *df_read_csv(char *path, int *err_out);
 
 /**
  * @brief Instantiates a DataFrame containing data from a CSV file.

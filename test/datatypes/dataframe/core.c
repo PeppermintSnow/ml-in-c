@@ -49,17 +49,23 @@ dataframe_t *generate_dummy_df(size_t n) {
         baz[i] = i * 3;
     }
 
-    dataframe_t *df = df_from_array(foo, n, "foo");
-    df_col_append(df, bar, n, "bar");
-    df_col_append(df, baz, n, "baz");
+    int err;
+    dataframe_t *df = df_from_array(foo, n, "foo", &err);
+    assert(err == DF_OK);
+
+    assert(df_col_append(df, bar, n, "bar") == DF_OK);
+    assert(df_col_append(df, baz, n, "baz") == DF_OK);
 
     return df;
 }
 
 void test_df_from_array() {
-    // Base case
+    // base case
     double *data = generate_dummy_data(SIZE);
-    dataframe_t *df = df_from_array(data, SIZE, "foo");
+
+    int err;
+    dataframe_t *df = df_from_array(data, SIZE, "foo", &err);
+    assert(err == DF_OK);
 
     assert(df != NULL);
     assert(df->n_cols == 1);
@@ -69,37 +75,49 @@ void test_df_from_array() {
 
     df_free(df);
 
-    // Error cases
-    assert(df_from_array(NULL, 0, NULL) == NULL);
-    assert(df_from_array(data, 0, "bar") == NULL);
-    assert(df_from_array(data, SIZE, NULL) == NULL);
+    // error cases
+    assert(df_from_array(NULL, 0, NULL, &err) == NULL);
+    assert(err == DF_BAD_ARG);
+
+    assert(df_from_array(data, 0, "bar", &err) == NULL);
+    assert(err == DF_BAD_ARG);
+
+    assert(df_from_array(data, SIZE, NULL, &err) == NULL);
+    assert(err == DF_BAD_ARG);
 
     free(data);
 }
 
 void test_df_col_get() {
-    // Base case
+    // base case
     dataframe_t *df = generate_dummy_df(SIZE);
-    double *col_data = df_col_get(df, "bar");
+
+    int err;
+    double *col_data = df_col_get(df, "bar", &err);
+    assert(err == DF_OK);
     
     assert(col_data != NULL);
     for (size_t i = 0; i < df->n_rows; i++)
         assert(col_data[i] == df->data[i * df->n_cols + 1]);
 
-    // Error cases
-    assert(df_col_get(df, "bax") == NULL);
+    // error cases
+    assert(df_col_get(df, "qux", &err) == NULL);
+    assert(err == DF_NO_COL);
 
     free(col_data);
     df_free(df);
 }
 
 void test_df_col_append() {
-    // Base case
+    // base case
     double *data = generate_dummy_data(SIZE);
-    dataframe_t *df = df_from_array(data, SIZE, "foo");
+    
+    int err;
+    dataframe_t *df = df_from_array(data, SIZE, "foo", &err);
+    assert(err == DF_OK);
 
-    df_col_append(df, data, SIZE, "bar");
-    df_col_append(df, data, SIZE, "baz");
+    assert(df_col_append(df, data, SIZE, "bar") == DF_OK);
+    assert(df_col_append(df, data, SIZE, "baz") == DF_OK);
 
     assert(df != NULL);
     assert(df->n_cols == 3);
@@ -109,19 +127,19 @@ void test_df_col_append() {
     assert(strcmp(df->columns[1], "bar") == 0);
     assert(strcmp(df->columns[2], "baz") == 0);
 
-    // Error cases
-    assert(df_col_append(df, data, SIZE, "foo") == DF_ERR_DUPLICATE_COLUMN);
-    assert(df_col_append(df, data, SIZE - 1, "bax") == DF_ERR_ROW_MISMATCH);
+    // error cases
+    assert(df_col_append(df, data, SIZE, "foo") == DF_COL_EXISTS);
+    assert(df_col_append(df, data, SIZE - 1, "bax") == DF_ROW_MISMATCH);
 
     df_free(df);
     free(data);
 }
 
 void test_df_col_drop() {
-    // Base case
+    // base case
     dataframe_t *df = generate_dummy_df(SIZE);
 
-    df_col_drop(df, "foo");
+    assert(df_col_drop(df, "foo") == DF_OK);
 
     assert(df != NULL);
     assert(df->n_cols == 2);
@@ -130,65 +148,69 @@ void test_df_col_drop() {
     assert(strcmp(df->columns[0], "bar") == 0);
     assert(strcmp(df->columns[1], "baz") == 0);
 
-    // Error cases
-    df_col_drop(df, "bar");
+    assert(df_col_drop(df, "bar") == DF_OK);
 
-    assert(df_col_drop(df, "foo") == DF_ERR_NONEXISTENT_COLUMN);
-    assert(df_col_drop(df, "baz") == DF_ERR_LAST_COLUMN);
+    // error cases
+    assert(df_col_drop(df, "foo") == DF_NO_COL);
+    assert(df_col_drop(df, "baz") == DF_LAST_COL);
 
     df_free(df);
 }
 
 void test_df_row_get() {
-    // Base case
+    // base case
     const size_t INDEX = 3;
     dataframe_t *df = generate_dummy_df(5);
-    double *row_data = df_row_get(df, INDEX);
+
+    int err;
+    double *row_data = df_row_get(df, INDEX, &err);
+    assert(err == DF_OK);
 
     assert(row_data != NULL);
     for (size_t i = 0; i < df->n_cols; i++)
         assert(row_data[i] == df->data[INDEX * df->n_cols + i]);
 
-    // Error case
-    assert(df_row_get(df, 99) == NULL);
+    // error case
+    assert(df_row_get(df, 99, &err) == NULL);
+    assert(err == DF_NO_ROW);
 
     free(row_data);
     df_free(df);
-
 }
 
 void test_df_row_append() {
-    // Base case
+    // base case
     double data[] = {1, 2, 3};
     dataframe_t *df = generate_dummy_df(SIZE);
 
-    df_row_append(df, data, LEN(data));
-    df_row_append(df, data, LEN(data));
+    assert(df_row_append(df, data, LEN(data)) == DF_OK);
+    assert(df_row_append(df, data, LEN(data)) == DF_OK);
 
     assert(df != NULL);
     assert(df->n_rows == SIZE + 2);
 
-    // Error cases
-    assert(df_row_append(df, data, LEN(data) + 1) == DF_ERR_COLUMN_MISMATCH);
+    // error cases
+    assert(df_row_append(df, data, LEN(data) + 1) == DF_COL_MISMATCH);
 
     df_free(df);
 }
 
 void test_df_row_drop() {
-    // Base case
+    // base case
     dataframe_t *df = generate_dummy_df(SIZE);
 
     for (size_t i = 0; i < 25; i++)
-        df_row_drop(df, i);
+        assert(df_row_drop(df, i) == DF_OK);
 
     assert(df != NULL);
     assert(df->n_rows == SIZE - 25);
 
-    // Error cases
-    assert(df_row_drop(df, SIZE) == DF_ERR_NONEXISTENT_ROW);
+    // error cases
+    assert(df_row_drop(df, SIZE) == DF_NO_ROW);
 
     df_free(df);
+
     df = generate_dummy_df(1);
-    assert(df_row_drop(df, 0) == DF_ERR_LAST_ROW);
+    assert(df_row_drop(df, 0) == DF_LAST_ROW);
     df_free(df);
 }

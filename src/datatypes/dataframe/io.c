@@ -1,24 +1,18 @@
 #include "../../../include/datatypes/dataframe/core.h"
+#include "../../../include/datatypes/dataframe/core_internal.h"
 #include "../../../include/datatypes/dataframe/io.h"
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-static inline void arr_free(char **arr, size_t n) {
-    for (size_t i = 0; i < n; i++)
-        free(arr[i]);
-    free(arr);
-} 
-
-dataframe_t *df_read_csv(char *path) {
+dataframe_t *df_read_csv(char *path, int *err_out) {
     FILE *fptr = fopen(path, "r");
     if (!fptr)
-        return NULL;
+        return df_fail(err_out, DF_IO);
 
     struct dataframe *df = calloc(1, sizeof(struct dataframe));
     if (!df)
-        return NULL;
+        return df_fail(err_out, DF_OOM);
 
     char buffer[BUFSIZ];
 
@@ -43,7 +37,7 @@ dataframe_t *df_read_csv(char *path) {
 
     df->columns = malloc(df->n_cols * sizeof(*df->columns));
     if (!df->columns)
-        goto fail;
+        goto fail_oom;
 
     size_t col_idx = 0;
     char *col_name = strtok(buffer, ",");
@@ -52,14 +46,14 @@ dataframe_t *df_read_csv(char *path) {
 
         df->columns[col_idx++] = strdup(col_name);
         if (!df->columns[col_idx - 1])
-            goto fail;
+            goto fail_oom;
 
         col_name = strtok(NULL, ",");
     }
 
     df->data = malloc(df->n_rows * df->n_cols * sizeof(*df->data));
     if (!df->data)
-        goto fail;
+        goto fail_oom;
 
     size_t row_idx = 0;
     while (fgets(buffer, BUFSIZ, fptr)) {
@@ -71,7 +65,7 @@ dataframe_t *df_read_csv(char *path) {
             double value = 0;
             for (size_t i = 0; data[i] != '\0'; i++) {
                 if (!(data[i] >= 48 && data[i] <= 57))
-                    goto fail;
+                    goto fail_io;
                 value = value * 10 + (data[i] - '0');
             }
 
@@ -81,26 +75,33 @@ dataframe_t *df_read_csv(char *path) {
         }
 
         // row-col mismatch if not equal
-        if (row_col_idx != df->n_cols)
-            goto fail;
+        if (row_col_idx != df->n_cols) {
+            goto fail_io;
+        }
 
         row_idx++;
     }
 
     fclose(fptr);
 
+    if (err_out)
+        *err_out = DF_OK;
     return df;
 
-fail:
+fail_oom:
     fclose(fptr);
     df_free(df);
-    return NULL;
+    return df_fail(err_out, DF_OOM);
+fail_io:
+    fclose(fptr);
+    df_free(df);
+    return df_fail(err_out, DF_IO);
 }
 
 int df_write_csv(dataframe_t *df, char *path, int precision) {
     FILE *fptr = fopen(path, "w");
     if (!fptr)
-        return errno;
+        return DF_IO;
 
     fprintf(fptr, "%s", df->columns[0]);
     for (size_t i = 1; i < df->n_cols; i++)

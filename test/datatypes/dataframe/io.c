@@ -18,10 +18,13 @@ int main() {
         qux[i] = i * 4;
     }
 
-    dataframe_t *df = df_from_array(foo, SIZE, "foo");
-    df_col_append(df, bar, SIZE, "bar");
-    df_col_append(df, baz, SIZE, "baz");
-    df_col_append(df, qux, SIZE, "qux");
+    int err;
+    dataframe_t *df = df_from_array(foo, SIZE, "foo", &err);
+    assert(err == DF_OK);
+
+	assert(df_col_append(df, bar, SIZE, "bar") == DF_OK);
+	assert(df_col_append(df, baz, SIZE, "baz") == DF_OK);
+	assert(df_col_append(df, qux, SIZE, "qux") == DF_OK);
 
     assert(df != NULL);
     assert(df->n_cols == 4);
@@ -29,7 +32,8 @@ int main() {
 
     assert(df_write_csv(df, FILEPATH, 0) == DF_OK);
 
-    dataframe_t *csv_df = df_read_csv(FILEPATH);
+    dataframe_t *csv_df = df_read_csv(FILEPATH, &err);
+    assert(err == DF_OK);
     
     assert(csv_df != NULL);
     assert(df->n_rows == csv_df->n_rows);
@@ -53,9 +57,14 @@ int main() {
     fputs("foo,bar,baz\n1,2,3\n4,5,invalid\n,7,8,9", invalid_fptr);
     fclose(invalid_fptr);
 
-    assert(df_read_csv("col_mismatch.csv") == NULL);
-    assert(df_read_csv("invalid_char.csv") == NULL);
-    assert(df_read_csv("non_existent_file.csv") == NULL);
+    assert(df_read_csv("col_mismatch.csv", &err) == NULL);
+    assert(err == DF_IO);
+
+    assert(df_read_csv("invalid_char.csv", &err) == NULL);
+    assert(err == DF_IO);
+
+    assert(df_read_csv("non_existent_file.csv", &err) == NULL);
+    assert(err == DF_IO);
 
     // cleanup
     remove(FILEPATH);

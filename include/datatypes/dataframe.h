@@ -4,5 +4,6 @@
 #include "./dataframe/core.h"
 #include "./dataframe/math.h"
 #include "./dataframe/io.h"
+#include "./dataframe/ops.h"
 
 #endif

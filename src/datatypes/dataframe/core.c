@@ -298,19 +298,22 @@ int df_row_drop(dataframe_t *df, const size_t row_idx) {
  * Displays the DataFrame in a table
  */
 void df_display(const dataframe_t *df) {
+    const int INDEX_WIDTH = 8;
+
     int widths[df->n_cols];
     for (size_t i = 0; i < df->n_cols; i++)
         widths[i] = strlen(df->columns[i]) + 4;
 
     printf("%zux%zu DataFrame\n", df->n_rows, df->n_cols);
 
+    printf("%-*c", INDEX_WIDTH, ' ');
     for (size_t i = 0; i < df->n_cols; i++) {
         char *name = df->columns[i];
         printf("%-*s", widths[i], name);
     }
 
     for (size_t r = 0; r < df->n_rows; r++) {
-        printf("\n");
+        printf("\n%-*zu", INDEX_WIDTH, r);
         for (size_t c = 0; c < df->n_cols; c++)
             printf("%-*.0lf", widths[c], df->data[r * df->n_cols + c]);
     }

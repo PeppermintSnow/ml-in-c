@@ -4,23 +4,6 @@
 #include <stddef.h>
 
 /**
- * Error Codes
- */
-typedef enum {
-    DF_OK = 0,          /**< No errors*/
-    DF_COL_EXISTS,      /**< Column already exists*/
-    DF_NO_COL,          /**< Column not found*/
-    DF_NO_ROW,          /**< Row not found*/
-    DF_LAST_COL,        /**< Cannot delete last column*/
-    DF_LAST_ROW,        /**< Cannot delete last row*/
-    DF_ROW_MISMATCH,    /**< Data length does not match df->n_rows*/
-    DF_COL_MISMATCH,    /**< Data length does not match df->n_columns*/
-    DF_IO,              /**< I/O error*/
-    DF_OOM,             /**< Out of memory*/
-    DF_BAD_ARG          /**< Bad argument*/
-} dataframe_error_t;
-
-/**
  * @brief Represents a matrix with names for each column.
  *
  * Data is stored as a row-major flattened array.
@@ -36,6 +19,30 @@ typedef struct dataframe {
     size_t n_rows;          /**< Number of rows */    
     size_t n_cols;          /**< Number of columns */
 } dataframe_t;
+
+/**
+ * @brief Error codes for the DataFrame helper functions.
+ *
+ * @see df_strerr() to convert the error codes to messages.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2026-03-01
+ */
+typedef enum {
+    DF_OK = 0,          /**< No errors*/
+    DF_COL_EXISTS,      /**< Column already exists*/
+    DF_NO_COL,          /**< Column not found*/
+    DF_NO_ROW,          /**< Row not found*/
+    DF_LAST_COL,        /**< Cannot delete last column*/
+    DF_LAST_ROW,        /**< Cannot delete last row*/
+    DF_ROW_MISMATCH,    /**< Data length does not match df->n_rows*/
+    DF_COL_MISMATCH,    /**< Data length does not match df->n_columns*/
+    DF_IO,              /**< I/O error*/
+    DF_OOM,             /**< Out of memory*/
+    DF_BAD_ARG          /**< Bad argument*/
+} dataframe_error_t;
 
 /**
  * @brief Creates a DataFrame with one feature from the given array.

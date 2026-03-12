@@ -121,6 +121,7 @@ int df_mask_apply(dataframe_t *df, const df_mask_t *mask);
  * @brief Frees all allocated memory by the mask.
  *
  * @param mask Pointer to the mask to free.
+ * @return 0 on success, non-zero on failure.
  *
  * @author PeppermintSnow
  * @since 0.0.0
@@ -128,5 +129,34 @@ int df_mask_apply(dataframe_t *df, const df_mask_t *mask);
  * @date 2025-03-07
  */
 int df_mask_free(df_mask_t *mask);
+
+/**
+ * @brief Creates a copy of a DataFrame.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param err_out Optional pointer to receive the error code.
+ * @return A copy of the target DataFrame.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2025-03-12
+ */
+dataframe_t *df_clone(const dataframe_t *df, int *err_out);
+
+/**
+ * @brief Keeps only the specified columns in the DataFrame.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param cols Array of column names to keep.
+ * @param n_cols Length of the `cols` parameter.
+ * @return 0 on success, non-zero on failure.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2025-03-12
+ */
+int df_subset(dataframe_t *df, const char **cols, const size_t n_cols);
 
 #endif

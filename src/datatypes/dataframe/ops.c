@@ -101,39 +101,6 @@ int df_mask_and(
     return DF_OK;
 }
 
-dataframe_t *df_clone(const dataframe_t *df, int *err_out) {
-    struct dataframe *clone_df = malloc(sizeof(struct dataframe));
-    if (!clone_df)
-        return df_fail(err_out, DF_OOM);
-
-    size_t nbytes_data = df->n_rows * df->n_cols * sizeof(*df->data);
-    clone_df->data = malloc(nbytes_data);
-    if (!clone_df->data)
-        goto fail;
-
-    clone_df->columns = malloc(df->n_cols * sizeof(*df->columns));
-    if (!clone_df->columns)
-        goto fail;
-
-    for (size_t i = 0; i < df->n_cols; i++) {
-        clone_df->columns[i] = strdup(df->columns[i]);
-        if (!clone_df->columns[i])
-            goto fail;
-    }
-
-    memcpy(clone_df->data, df->data, nbytes_data);
-    clone_df->n_rows = df->n_rows;
-    clone_df->n_cols = df->n_cols;
-
-    if (err_out)
-        *err_out = DF_OK;
-    return clone_df;
-
-fail:
-    df_free(clone_df);
-    return df_fail(err_out, DF_OOM);
-}
-
 int df_mask_apply(dataframe_t *df, const df_mask_t *mask) {
     if (mask->n_rows != df->n_rows)
         return DF_ROW_MISMATCH;
@@ -170,7 +137,40 @@ int df_mask_free(df_mask_t *mask) {
     return DF_OK;
 }
 
-int df_subset(dataframe_t *df, const char **cols, const size_t n_cols) {
+dataframe_t *df_clone(const dataframe_t *df, int *err_out) {
+    struct dataframe *clone_df = malloc(sizeof(struct dataframe));
+    if (!clone_df)
+        return df_fail(err_out, DF_OOM);
+
+    size_t nbytes_data = df->n_rows * df->n_cols * sizeof(*df->data);
+    clone_df->data = malloc(nbytes_data);
+    if (!clone_df->data)
+        goto fail;
+
+    clone_df->columns = malloc(df->n_cols * sizeof(*df->columns));
+    if (!clone_df->columns)
+        goto fail;
+
+    for (size_t i = 0; i < df->n_cols; i++) {
+        clone_df->columns[i] = strdup(df->columns[i]);
+        if (!clone_df->columns[i])
+            goto fail;
+    }
+
+    memcpy(clone_df->data, df->data, nbytes_data);
+    clone_df->n_rows = df->n_rows;
+    clone_df->n_cols = df->n_cols;
+
+    if (err_out)
+        *err_out = DF_OK;
+    return clone_df;
+
+fail:
+    df_free(clone_df);
+    return df_fail(err_out, DF_OOM);
+}
+
+int df_col_select(dataframe_t *df, const char **cols, const size_t n_cols) {
     size_t col_idxs[n_cols];
     size_t match_idx = 0;
     for (size_t i = 0; i < df->n_cols; i++)
@@ -220,4 +220,28 @@ fail:
         free(tmp_cols);
     }
     return DF_OOM;
+}
+
+int df_row_select(dataframe_t *df, const size_t start, const size_t end) {
+    if (start > end)
+        return DF_BAD_ARG;
+    if (end > df->n_rows)
+        return DF_NO_ROW;
+
+    size_t n_rows = end - start;
+    double *tmp_data = malloc(n_rows * df->n_cols * sizeof(*df->data));
+    if (!tmp_data)
+        return DF_OOM;
+
+    memcpy(
+        tmp_data, 
+        &df->data[start * df->n_cols], 
+        n_rows * df->n_cols * sizeof(*df->data)
+    );
+
+    free(df->data);
+    df->data = tmp_data;
+    df->n_rows = n_rows;
+
+    return DF_OK;
 }

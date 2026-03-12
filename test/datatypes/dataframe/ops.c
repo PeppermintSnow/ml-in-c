@@ -7,7 +7,8 @@
 
 void test_df_clone();
 void test_df_mask();
-void test_df_subset();
+void test_df_col_select();
+void test_df_row_select();
 
 dataframe_t *generate_dummy_df(size_t n) {
     double foo[n], bar[n], baz[n];
@@ -30,7 +31,8 @@ dataframe_t *generate_dummy_df(size_t n) {
 int main() {
     test_df_clone();
     test_df_mask();
-    test_df_subset();
+    test_df_col_select();
+    test_df_row_select();
 }
 
 void test_df_clone() {
@@ -122,7 +124,7 @@ void test_df_mask() {
     df_free(df);
 }
 
-void test_df_subset() {
+void test_df_col_select() {
     int err;
 
     dataframe_t *df = generate_dummy_df(1000);
@@ -132,7 +134,7 @@ void test_df_subset() {
     const char *cols[] = { "foo", "baz" };
     size_t len = sizeof(cols) / sizeof(cols[0]);
 
-    assert(df_subset(df, cols, len) == DF_OK);
+    assert(df_col_select(df, cols, len) == DF_OK);
     assert(df->n_cols == len);
 
     double *foo = df_col_get(df, "foo", &err);
@@ -154,12 +156,38 @@ void test_df_subset() {
     const char *invalid[] = { "foo", "qux" };
     size_t invalid_len = sizeof(invalid) / sizeof(invalid[0]);
 
-    assert(df_subset(clone_df, invalid, invalid_len) == DF_NO_COL);
+    assert(df_col_select(clone_df, invalid, invalid_len) == DF_NO_COL);
 
     free(clone_baz);
     free(clone_foo);
     free(baz);
     free(foo);
+    df_free(clone_df);
+    df_free(df);
+}
+
+void test_df_row_select() {
+    int err;
+
+    dataframe_t *df = generate_dummy_df(1000);
+    dataframe_t *clone_df = df_clone(df, &err);
+    assert(err == DF_OK);
+
+    assert(df_row_select(df, 500, 1000) == DF_OK);
+    assert(df->n_rows == 500);
+
+    for (size_t r = 0; r < df->n_rows; r++)
+        for (size_t c = 0; c < df->n_cols; c++)
+            assert(
+                df->data[r * df->n_cols + c] 
+                    == clone_df->data[(r + 500) * df->n_cols + c]
+            );
+
+    // error case
+    assert(df_row_select(df, 1000, 500) == DF_BAD_ARG);
+    assert(df_row_select(df, 500, 1001) == DF_NO_ROW);
+    assert(df_row_select(df, 1001, 9999) == DF_NO_ROW);
+
     df_free(clone_df);
     df_free(df);
 }

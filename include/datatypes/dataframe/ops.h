@@ -157,6 +157,21 @@ dataframe_t *df_clone(const dataframe_t *df, int *err_out);
  * @version 0.0.0
  * @date 2025-03-12
  */
-int df_subset(dataframe_t *df, const char **cols, const size_t n_cols);
+int df_col_select(dataframe_t *df, const char **cols, const size_t n_cols);
+
+/**
+ * @brief Keeps only the range of rows in the DataFrame.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param start Index to slice from.
+ * @param end Index to slice to.
+ * @return 0 on success, non-zero on failure.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2025-03-12
+ */
+int df_row_select(dataframe_t *df, const size_t start, const size_t end);
 
 #endif

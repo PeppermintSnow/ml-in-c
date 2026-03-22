@@ -1,9 +1,7 @@
-#include "../../../include/datatypes/dataframe/core.h"
-#include "../../../include/datatypes/dataframe/core_internal.h"
-#include "../../../include/datatypes/dataframe/io.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "datatypes/dataframe/core_internal.h"
+#include "datatypes/dataframe/io.h"
 
 dataframe_t *df_read_csv(char *path, int *err_out) {
     FILE *fptr = fopen(path, "r");

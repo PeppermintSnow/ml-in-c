@@ -1,9 +1,9 @@
 #ifndef DATAFRAME_CORE_INTERNAL_H
 #define DATAFRAME_CORE_INTERNAL_H
 
-#include <stddef.h>
 #include <string.h>
 #include <math.h>
+#include "./core.h"
 
 static inline size_t df_col_idx( const dataframe_t *df, const char *col) {
     for (size_t i = 0; i < df->n_cols; i++)

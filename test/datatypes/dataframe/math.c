@@ -1,9 +1,7 @@
-#include "../../../include/datatypes/dataframe/core.h"
-#include "../../../include/datatypes/dataframe/math.h"
 #include <assert.h>
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include "datatypes/dataframe/math.h"
 
 #define SIZE 1000
 

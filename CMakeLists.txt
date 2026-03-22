@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 4.0)
 project(ml_in_c C)
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 enable_testing()
 

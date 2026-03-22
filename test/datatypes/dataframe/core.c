@@ -1,10 +1,7 @@
-#include "../../../include/datatypes/dataframe/core.h"
-#include <assert.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+#include "datatypes/dataframe/core.h"
 
 #define LEN(arr) (sizeof(arr) / sizeof(arr[0]))
 #define SIZE 1000
@@ -19,6 +16,7 @@ void test_df_col_drop();
 void test_df_row_get();
 void test_df_row_append();
 void test_df_row_drop();
+void test_df_clone();
 
 int main() {
     test_df_from_array();
@@ -28,6 +26,7 @@ int main() {
     test_df_row_get();
     test_df_row_append();
     test_df_row_drop();
+    test_df_clone();
 }
 
 double *generate_dummy_data(size_t n) {
@@ -212,5 +211,27 @@ void test_df_row_drop() {
 
     df = generate_dummy_df(1);
     assert(df_row_drop(df, 0) == DF_LAST_ROW);
+    df_free(df);
+}
+
+void test_df_clone() {
+    int err;
+
+    dataframe_t *df = generate_dummy_df(SIZE);
+    dataframe_t *clone_df = df_clone(df, &err);
+    assert(err == DF_OK);
+
+    assert(df->n_rows == clone_df->n_rows);
+    assert(df->n_cols == clone_df->n_cols);
+    for (size_t r = 0; r < df->n_rows; r++)
+        for (size_t c = 0; c < df->n_cols; c++) {
+            size_t idx = r * df->n_cols + c;
+            assert(df->data[idx] == clone_df->data[idx]); 
+        }
+
+    for (size_t i = 0; i < df->n_cols; i++)
+        assert(strcmp(df->columns[i], clone_df->columns[i]) == 0);
+
+    df_free(clone_df);
     df_free(df);
 }

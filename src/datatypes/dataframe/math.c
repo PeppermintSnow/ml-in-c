@@ -1,12 +1,4 @@
-#include "../../../include/datatypes/dataframe/core.h"
-#include "../../../include/datatypes/dataframe/core_internal.h"
-#include "../../../include/datatypes/dataframe/math_internal.h"
-#include "../../../include/datatypes/dataframe/math.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "datatypes/dataframe/math_internal.h"
 
 double *df_col_add(
 	const dataframe_t *df,

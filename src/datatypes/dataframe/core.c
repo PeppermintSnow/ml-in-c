@@ -1,9 +1,7 @@
-#include "../../../include/datatypes/dataframe/core.h"
-#include "../../../include/datatypes/dataframe/core_internal.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdint.h>
+#include "datatypes/dataframe/core_internal.h"
 
 /**
  * Creates a DataFrame with one feature/column from an array.
@@ -319,6 +317,39 @@ void df_display(const dataframe_t *df) {
     }
 
     printf("\n");
+}
+
+dataframe_t *df_clone(const dataframe_t *df, int *err_out) {
+    struct dataframe *clone_df = malloc(sizeof(struct dataframe));
+    if (!clone_df)
+        return df_fail(err_out, DF_OOM);
+
+    size_t nbytes_data = df->n_rows * df->n_cols * sizeof(*df->data);
+    clone_df->data = malloc(nbytes_data);
+    if (!clone_df->data)
+        goto fail;
+
+    clone_df->columns = malloc(df->n_cols * sizeof(*df->columns));
+    if (!clone_df->columns)
+        goto fail;
+
+    for (size_t i = 0; i < df->n_cols; i++) {
+        clone_df->columns[i] = strdup(df->columns[i]);
+        if (!clone_df->columns[i])
+            goto fail;
+    }
+
+    memcpy(clone_df->data, df->data, nbytes_data);
+    clone_df->n_rows = df->n_rows;
+    clone_df->n_cols = df->n_cols;
+
+    if (err_out)
+        *err_out = DF_OK;
+    return clone_df;
+
+fail:
+    df_free(clone_df);
+    return df_fail(err_out, DF_OOM);
 }
 
 /**

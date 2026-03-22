@@ -1,9 +1,8 @@
 #ifndef DATAFRAME_MATH_INTERNAL_H
 #define DATAFRAME_MATH_INTERNAL_H
 
-#include "./core.h"
 #include <stdlib.h>
-#include <string.h>
+#include "./core_internal.h"
 
 /**
  * inline col-to-col helper to comply with DRY

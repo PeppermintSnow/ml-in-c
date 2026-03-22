@@ -169,6 +169,20 @@ int df_row_drop(dataframe_t *df, const size_t row_idx);
 void df_display(const dataframe_t *df);
 
 /**
+ * @brief Creates a copy of a DataFrame.
+ *
+ * @param df Pointer to the target DataFrame.
+ * @param err_out Optional pointer to receive the error code.
+ * @return A copy of the target DataFrame.
+ *
+ * @author PeppermintSnow
+ * @since 0.0.0
+ * @version 0.0.0
+ * @date 2025-03-12
+ */
+dataframe_t *df_clone(const dataframe_t *df, int *err_out);
+
+/**
  * @brief Frees all allocated memory by the DataFrame.
  *
  * @param df Pointer to the DataFrame to free.

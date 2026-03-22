@@ -1,9 +1,7 @@
-#include "../../../include/datatypes/dataframe/core.h"
-#include "../../../include/datatypes/dataframe/io.h"
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include "datatypes/dataframe/io.h"
 
 #define FILEPATH "dataframe_io_test.csv"
 #define SIZE 1000

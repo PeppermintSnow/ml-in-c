@@ -1,5 +1,3 @@
-add_subdirectory(ops)
-
 file(GLOB TESTS "*.c")
 
 foreach(test_src ${TESTS})

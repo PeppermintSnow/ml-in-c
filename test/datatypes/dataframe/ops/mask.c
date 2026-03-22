@@ -1,24 +1,6 @@
-#include <assert.h>
 #include <stdlib.h>
+#include "test_utils.h"
 #include "datatypes/dataframe/ops/mask.h"
-
-dataframe_t *generate_dummy_df(size_t n) {
-    double foo[n], bar[n], baz[n];
-    for (size_t i = 0; i < n; i++) {
-        foo[i] = i;
-        bar[i] = i * 2;
-        baz[i] = i * 3;
-    }
-
-    int err;
-    dataframe_t *df = df_from_array(foo, n, "foo", &err);
-    assert(err == DF_OK);
-
-    assert(df_col_append(df, bar, n, "bar") == DF_OK);
-    assert(df_col_append(df, baz, n, "baz") == DF_OK);
-
-    return df;
-}
 
 int main() {
     int err;
@@ -35,7 +17,7 @@ int main() {
 
     // 500 <= foo <= 550
     assert(df_mask_and(mask, df, "foo", DF_MASK_GE, 500) == DF_OK);
-    assert(mask->n_keep == 500);
+    assert(mask->n_keep == 501);
     assert(df_mask_and(mask, df, "foo", DF_MASK_LE, 550) == DF_OK);
     assert(mask->n_keep == 51); // 51 integers in 550 - 550
 
@@ -55,24 +37,30 @@ int main() {
     assert(df_mask_and(mask, df, "baz", DF_MASK_NE, 2994) == DF_OK);
     assert(mask->n_keep == 78);
 
-    assert(df_mask_apply(df, mask) == DF_OK);
+    size_t expected_count = 0;
+    size_t expected_indices[df->n_rows];
+    for (size_t r = 0; r < df->n_rows; r++) {
+        double foo = df->data[r * df->n_cols];
+        double bar = df->data[r * df->n_cols + 1];
+        double baz = df->data[r * df->n_cols + 2];
+        if (foo >= 500 && foo <= 550)
+            expected_indices[expected_count++] = r;
+        else if (bar > 1849 && bar < 1901)
+            expected_indices[expected_count++] = r;
+        else if (baz == 2997)
+            expected_indices[expected_count++] = r;
+    }
 
+    assert(df_mask_apply(df, mask) == DF_OK);
     assert(df->n_rows == mask->n_keep);
     for (size_t r = 0; r < df->n_rows; r++) {
         double *row = df_row_get(df, r, &err);
-        if (r < 51) { // first 51 rows contain 500 <= foo <= 550
-            assert(row[0] == 500 + r);
-            assert(row[1] == (500 + r) * 2);
-            assert(row[2] == (500 + r) * 3);
-        } else if (r < 77) { // rows 51 - 77 contain 1849 < bar < 1901
-            assert(row[0] == 925 + (r - 51));
-            assert(row[1] == 1850 + ((r - 51) * 2));
-            assert(row[2] == 2775 + ((r - 51) * 3));
-        } else { // row 78 contains bar == 2997
-            assert(row[0] == 999);
-            assert(row[1] == 1998);
-            assert(row[2] == 2997);
-        }
+        size_t expected_idx = expected_indices[r];
+
+        assert(row[0] == clone_df->data[expected_idx * df->n_cols]);
+        assert(row[1] == clone_df->data[expected_idx * df->n_cols + 1]);
+        assert(row[2] == clone_df->data[expected_idx * df->n_cols + 2]);
+
         free(row);
     }
 

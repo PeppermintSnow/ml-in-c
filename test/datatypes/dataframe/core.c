@@ -1,13 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
+#include "test_utils.h"
 #include "datatypes/dataframe/core.h"
 
 #define LEN(arr) (sizeof(arr) / sizeof(arr[0]))
 #define SIZE 1000
 
 double *generate_dummy_data(size_t n);
-dataframe_t *generate_dummy_df(size_t n);
 
 void test_df_from_array();
 void test_df_col_get();
@@ -38,24 +37,6 @@ double *generate_dummy_data(size_t n) {
         data[i] = i;
 
     return data;
-}
-
-dataframe_t *generate_dummy_df(size_t n) {
-    double foo[n], bar[n], baz[n];
-    for (size_t i = 0; i < n; i++) {
-        foo[i] = i;
-        bar[i] = i * 2;
-        baz[i] = i * 3;
-    }
-
-    int err;
-    dataframe_t *df = df_from_array(foo, n, "foo", &err);
-    assert(err == DF_OK);
-
-    assert(df_col_append(df, bar, n, "bar") == DF_OK);
-    assert(df_col_append(df, baz, n, "baz") == DF_OK);
-
-    return df;
 }
 
 void test_df_from_array() {

@@ -194,7 +194,7 @@ const config: Config = {
           items: [
             {
               label: 'Notes',
-              to: '/notes'
+              to: '/notes/category/dataframe'
             },
             {
               label: 'Blog',

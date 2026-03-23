@@ -49,7 +49,16 @@ const config: Config = {
       truncateMarker: /<--\s*(truncate)\s*-->/,
       remarkPlugins: [remarkMath],
       rehypePlugins: [rehypeKatex],
-    }]
+    }],
+    ['@docusaurus/plugin-content-docs', {
+      id: 'notes',
+      path: 'notes',
+      routeBasePath: 'notes',
+      sidebarPath: './sidebars.notes.ts',
+      showLastUpdateTime: true,
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeKatex],
+    }],
   ],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -137,8 +146,23 @@ const config: Config = {
           position: 'left',
           label: 'API'
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {to: '/changelogs', label: 'Changelogs', position: 'left'},
+        {
+          to: '/changelogs', 
+          label: 'Changelogs', 
+          position: 'left'
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'noteSidebar',
+          docsPluginId: 'notes',
+          label: 'Notes',
+          position: 'right'
+        },
+        {
+          to: '/blog', 
+          label: 'Blog', 
+          position: 'right'
+        },
         {
           href: 'https://github.com/PeppermintSnow/ml-in-c',
           label: 'GitHub',
@@ -169,6 +193,10 @@ const config: Config = {
         {
           title: 'More',
           items: [
+            {
+              label: 'Notes',
+              to: '/notes'
+            },
             {
               label: 'Blog',
               to: '/blog',

@@ -55,7 +55,6 @@ const config: Config = {
       path: 'notes',
       routeBasePath: 'notes',
       sidebarPath: './sidebars.notes.ts',
-      showLastUpdateTime: true,
       remarkPlugins: [remarkMath],
       rehypePlugins: [rehypeKatex],
     }],

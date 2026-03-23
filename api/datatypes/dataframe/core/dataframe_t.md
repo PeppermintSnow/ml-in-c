@@ -30,7 +30,7 @@ Last updated in version **0.0.0**
 
 ## Properties
 
-- **`double *data`** ← _Flattened array_  
-- **`char **columns`** ← _Array of column names_  
-- **`size_t n_rows;`** ← _Number of rows_  
-- **`size_t n_cols;`** ← _Number of columns_  
+- **`double *dat`** ← _Flattened array_  
+- **`char **column`** ← _Array of column names_  
+- **`size_t n_rows`** ← _Number of rows_  
+- **`size_t n_cols`** ← _Number of columns_  

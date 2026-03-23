@@ -29,6 +29,6 @@ Last updated in version **0.0.0**
 
 ## Properties
 
-- **`uint8_t *data`** ← _Boolean array containing 0x00 or 0xFF_  
-- **`size_t n_rows;`** ← _Total number of rows, inherited target DataFrame_  
-- **`size_t n_keep;`** ← _Number of 0xFF values in data_  
+- **`uint8_t *dat`** ← _Boolean array containing 0x00 or 0xFF_  
+- **`size_t n_rows`** ← _Total number of rows, inherited target DataFrame_  
+- **`size_t n_keep`** ← _Number of 0xFF values in data_  

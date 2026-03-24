@@ -5,7 +5,7 @@
 int df_sort(
     dataframe_t *df, 
     const char *col, 
-    const df_sort_order order
+    const df_sort_order_t order
 ) {
     size_t col_idx = df_col_idx(df, col);
     if (col_idx == (size_t)-1)

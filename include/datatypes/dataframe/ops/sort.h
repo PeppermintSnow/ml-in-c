@@ -16,7 +16,7 @@
 typedef enum {
     DF_SORT_ASC = 0, /**< Ascending order */
     DF_SORT_DESC,    /**< Descending order */
-} df_sort_order;
+} df_sort_order_t;
 
 /**
  * @brief Sorts the DataFrame by specified columns in sequential order.
@@ -35,7 +35,7 @@ typedef enum {
 int df_sort(
     dataframe_t *df, 
     const char *col, 
-    const df_sort_order order
+    const df_sort_order_t order
 );
 
 #endif

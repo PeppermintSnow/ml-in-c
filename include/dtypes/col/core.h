@@ -1,8 +1,9 @@
-#ifndef COLUMN_CORE_H
-#define COLUMN_CORE_H
+#ifndef COL_CORE_H
+#define COL_CORE_H
 
-#include "dtypes/col/core/struct.h"
-#include "dtypes/col/core/enum.h"
-#include "dtypes/col/core/function.h"
+#include "dtypes/col/core/type.h"
+#include "dtypes/col/core/lifecycle.h"
+#include "dtypes/col/core/accessors.h"
+#include "dtypes/col/core/modifiers.h"
 
 #endif

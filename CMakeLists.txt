@@ -3,7 +3,10 @@ project(ml_in_c C)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(CTest)
 enable_testing()
+set(MEMORYCHECK_COMMAND valgrind)
+set(MEMORYCHECK_COMMAND_OPTIONS "--leak-check=full --track-origins=yes --error-exitcode=1")
 
 add_library(ml_in_c STATIC)
 

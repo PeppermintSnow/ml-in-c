@@ -10,18 +10,25 @@
 #define MLC_ABORT() do { } while (0)
 #endif
 
-static inline void *mlc_fail_null(int err_code, int *err_out) {
+static inline void *mlc_fail_null(const int err_code, int *err_out) {
     if (err_out)
         *err_out = err_code;
     MLC_ABORT();
     return NULL;
 }
 
-static inline double mlc_fail_nan(int err_code, int *err_out) {
+static inline double mlc_fail_nan(const int err_code, int *err_out) {
     if (err_out)
         *err_out = err_code;
     MLC_ABORT();
     return NAN;
+}
+
+static inline void *mlc_fail_zero(const int err_code, int *err_out) {
+    if (err_out)
+        *err_out = err_code;
+    MLC_ABORT();
+    return 0;
 }
 
 #endif

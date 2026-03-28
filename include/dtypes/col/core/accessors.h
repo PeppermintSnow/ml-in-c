@@ -19,7 +19,7 @@
  * @version 0.0.0
  * @date 2026-03-27
  */
-static inline double *col_double_at(
+static inline const double *col_double_at(
     const col_t *col, 
     const size_t idx,
     int *err_out
@@ -28,6 +28,8 @@ static inline double *col_double_at(
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     if (idx >= col->n_rows)
         return mlc_fail_null(COL_ERR_OUT_OF_BOUNDS, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return &((double *)col->data)[idx];
 }
 
@@ -44,15 +46,17 @@ static inline double *col_double_at(
  * @version 0.0.0
  * @date 2026-03-27
  */
-static inline float *col_float_at(
+static inline const float *col_float_at(
     const col_t *col, 
     const size_t idx,
     int *err_out
 ) {
-    if (col->dtype != COL_DTYPE_DOUBLE)
+    if (col->dtype != COL_DTYPE_FLOAT)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     if (idx >= col->n_rows)
         return mlc_fail_null(COL_ERR_OUT_OF_BOUNDS, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return &((float *)col->data)[idx];
 }
 
@@ -78,6 +82,8 @@ static inline const int64_t *col_int64_at(
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     if (idx >= col->n_rows)
         return mlc_fail_null(COL_ERR_OUT_OF_BOUNDS, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return &((const int64_t *)col->data)[idx];
 }
 
@@ -103,6 +109,8 @@ static inline const int32_t *col_int32_at(
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     if (idx >= col->n_rows)
         return mlc_fail_null(COL_ERR_OUT_OF_BOUNDS, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return &((const int32_t *)col->data)[idx];
 }
 
@@ -128,6 +136,8 @@ static inline const uint8_t *col_uint8_at(
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     if (idx >= col->n_rows)
         return mlc_fail_null(COL_ERR_OUT_OF_BOUNDS, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return &((const uint8_t *)col->data)[idx];
 }
 
@@ -153,6 +163,8 @@ static inline const char *col_string_at(
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     if (idx >= col->n_rows)
         return mlc_fail_null(COL_ERR_OUT_OF_BOUNDS, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return ((const char **)col->data)[idx];
 }
 
@@ -171,6 +183,8 @@ static inline const char *col_string_at(
 static inline const double *col_double_get(const col_t *col, int *err_out) {
     if (col->dtype != COL_DTYPE_DOUBLE)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return (const double *)col->data;
 }
 
@@ -189,6 +203,8 @@ static inline const double *col_double_get(const col_t *col, int *err_out) {
 static inline const float *col_float_get(const col_t *col, int *err_out) {
     if (col->dtype != COL_DTYPE_FLOAT)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return (const float *)col->data;
 }
 
@@ -205,8 +221,10 @@ static inline const float *col_float_get(const col_t *col, int *err_out) {
  * @date 2026-03-27
  */
 static inline const int64_t *col_int64_get(const col_t *col, int *err_out) {
-    if (col->dtype != COL_DTYPE_FLOAT)
+    if (col->dtype != COL_DTYPE_INT64)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return (const int64_t *)col->data;
 }
 
@@ -223,8 +241,10 @@ static inline const int64_t *col_int64_get(const col_t *col, int *err_out) {
  * @date 2026-03-27
  */
 static inline const int32_t *col_int32_get(const col_t *col, int *err_out) {
-    if (col->dtype != COL_DTYPE_FLOAT)
+    if (col->dtype != COL_DTYPE_INT32)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return (const int32_t *)col->data;
 }
 
@@ -241,7 +261,7 @@ static inline const int32_t *col_int32_get(const col_t *col, int *err_out) {
  * @date 2026-03-27
  */
 static inline const uint8_t *col_uint8_get(const col_t *col, int *err_out) {
-    if (col->dtype != COL_DTYPE_FLOAT)
+    if (col->dtype != COL_DTYPE_UINT8)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
     return (const uint8_t *)col->data;
 }
@@ -261,6 +281,8 @@ static inline const uint8_t *col_uint8_get(const col_t *col, int *err_out) {
 static inline const char **col_string_get(const col_t *col, int *err_out) {
     if (col->dtype != COL_DTYPE_STRING)
         return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
+    if (err_out)
+        *err_out = COL_ERR_OK;
     return (const char **)col->data;
 }
 

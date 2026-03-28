@@ -2,3 +2,7 @@ add_executable(test_col_lifecycle test_lifecycle.c)
 target_link_libraries(test_col_lifecycle ml_in_c)
 add_test(NAME dtypes_col_core_lifecycle COMMAND test_col_lifecycle)
 
+add_executable(test_col_accessors test_accessors.c)
+target_link_libraries(test_col_accessors ml_in_c)
+add_test(NAME dtypes_col_core_accessors COMMAND test_col_accessors)
+

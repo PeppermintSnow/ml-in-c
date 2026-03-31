@@ -11,7 +11,7 @@ last_update:
 
 ```c
 static inline const int32_t *col_int32_get(const col_t *col, int *err_out) {
-    if (col-\>dtype != COL_DTYPE_FLOAT)
+    if (col-\>dtype != COL_DTYPE_INT32)
 return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
 ```
 

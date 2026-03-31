@@ -10,12 +10,12 @@ last_update:
 ---
 
 ```c
-static inline float *col_float_at(
+static inline const float *col_float_at(
     const col_t *col,
     const size_t idx,
     int *err_out
     ) {
-    if (col-\>dtype != COL_DTYPE_DOUBLE)
+    if (col-\>dtype != COL_DTYPE_FLOAT)
 return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
 ```
 
@@ -36,4 +36,4 @@ Last updated in version **0.0.0**
 - **` err_out`** ← _Optional pointer to receive error codes._  
 ## Return
 
-- **`static inline float *`** → Pointer to the C `float` at `col-\>data[idx]`. NULL on error.
+- **`static inline const float *`** → Pointer to the C `float` at `col-\>data[idx]`. NULL on error.

@@ -11,7 +11,7 @@ last_update:
 
 ```c
 static inline const uint8_t *col_uint8_get(const col_t *col, int *err_out) {
-    if (col-\>dtype != COL_DTYPE_FLOAT)
+    if (col-\>dtype != COL_DTYPE_UINT8)
 return mlc_fail_null(COL_ERR_INVALID_DTYPE, err_out);
 ```
 

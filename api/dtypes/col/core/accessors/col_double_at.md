@@ -10,7 +10,7 @@ last_update:
 ---
 
 ```c
-static inline double *col_double_at(
+static inline const double *col_double_at(
     const col_t *col,
     const size_t idx,
     int *err_out
@@ -36,4 +36,4 @@ Last updated in version **0.0.0**
 - **` err_out`** ← _Optional pointer to receive error codes._  
 ## Return
 
-- **`static inline double *`** → Pointer to the C `double` at `col-\>data[idx]`. NULL on error.
+- **`static inline const double *`** → Pointer to the C `double` at `col-\>data[idx]`. NULL on error.

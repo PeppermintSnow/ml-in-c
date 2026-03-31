@@ -1,16 +1,16 @@
 ---
-title: "col_pop"
+title: "col_remove"
 description: "Removes the specified index from the `col_t`'s data."
 sidebar_position: "3"
-tags: [col_pop, added 0.0.0, updated 0.0.0]
-keywords: [ml-in-c, machine learning, col_pop]
+tags: [col_remove, added 0.0.0, updated 0.0.0]
+keywords: [ml-in-c, machine learning, col_remove]
 last_update:
   date: 2026-03-24
   author: PeppermintSnow
 ---
 
 ```c
-int col_pop(col_t *col, const size_t idx);
+int col_remove(col_t *col, const size_t idx);
 ```
 
 Removes the specified index from the `col_t`'s data.

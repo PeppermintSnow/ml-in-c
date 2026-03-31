@@ -32,21 +32,18 @@ static col_t *col_init(
     const size_t stride = col_dtype_stride(dtype);
 
     /* alloc */
-    struct col *col = NULL;
-    void *tmp_data = NULL;
-    char *tmp_name = NULL;
 
-    col = malloc(sizeof(struct col));
+    struct col *col = malloc(sizeof(struct col));
     if (!col)
-        goto fail;
+        goto fail_col;
 
-    tmp_data = n_rows ? malloc(n_rows * stride) : NULL;
+    void *tmp_data = n_rows ? malloc(n_rows * stride) : NULL;
     if (!tmp_data && n_rows)
-        goto fail;
+        goto fail_tmp_data;
 
-    tmp_name = strdup(name);
+    char *tmp_name = strdup(name);
     if (!tmp_name)
-        goto fail;
+        goto fail_tmp_name;
 
     /* init */
     struct col tmp_col = { 
@@ -60,13 +57,12 @@ static col_t *col_init(
 
     return col;
 
-fail:
-    if (col)
-        free(col);
-    if (tmp_data)
-        free(tmp_data);
-    if (tmp_name)
-        free(tmp_name);
+fail_tmp_name:
+    free(tmp_name);
+fail_tmp_data:
+    free(tmp_data);
+fail_col:
+    free(col);
     return NULL;
 }
 
@@ -149,21 +145,17 @@ col_t *col_clone(const col_t *col, int *err_out) {
     /* alloc */
     err_code = COL_ERR_OOM;
 
-    struct col *new_col = NULL;
-    char *tmp_name = NULL;
-    void *tmp_data = NULL;
-
-    new_col = malloc(sizeof(struct col));
+    struct col *new_col = malloc(sizeof(struct col));
     if (!new_col)
-        goto fail;
+        goto fail_new_col;
 
-    tmp_data = col->n_rows ? malloc(col->n_rows * col->stride) : NULL;
+    void *tmp_data = col->n_rows ? malloc(col->n_rows * col->stride) : NULL;
     if (!tmp_data && col->n_rows)
-        goto fail;
+        goto fail_tmp_data;
 
-    tmp_name = strdup(col->name);
+    char *tmp_name = strdup(col->name);
     if (!tmp_name)
-        goto fail;
+        goto fail_tmp_name;
 
     /* assign */
     memcpy(new_col, col, sizeof(struct col));
@@ -175,17 +167,17 @@ col_t *col_clone(const col_t *col, int *err_out) {
 
     err_code = col_data_fill(new_col, col->data);
     if (err_code)
-        goto fail;
+        goto fail_fill;
 
     return new_col;
 
-fail:
-    if (new_col)
-        col_free(new_col);
-    if (tmp_data)
-        free(tmp_data);
-    if (tmp_name)
-        free(tmp_name);
+fail_fill:
+fail_tmp_name:
+    free(tmp_name);
+fail_tmp_data:
+    free(tmp_data);
+fail_new_col:
+    free(new_col);
     return mlc_fail_null(err_code, err_out);
 }
 

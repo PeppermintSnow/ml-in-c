@@ -6,3 +6,6 @@ add_executable(test_col_accessors test_accessors.c)
 target_link_libraries(test_col_accessors ml_in_c)
 add_test(NAME dtypes_col_core_accessors COMMAND test_col_accessors)
 
+add_executable(test_col_modifiers test_modifiers.c)
+target_link_libraries(test_col_modifiers ml_in_c)
+add_test(NAME dtypes_col_core_modifiers COMMAND test_col_modifiers)

@@ -22,6 +22,8 @@ static void col_assert(
     const int err
 );
 
+static const size_t SIZE = 999;
+
 int main() {
     test_col_create();
     test_col_create_array();
@@ -73,59 +75,58 @@ void test_col_create() {
 
 void test_col_create_array() {
     int err = 0;
-    size_t size = 999;
 
     /* valid */
-    double *double_data = col_double_data_create(size);
-    struct col *col_double = col_double_dummy_create("double", size);
-    col_assert(col_double, "double", double_data, size, COL_DTYPE_DOUBLE, err);
+    double *double_data = col_double_data_create(SIZE);
+    struct col *col_double = col_double_dummy_create("double", SIZE);
+    col_assert(col_double, "double", double_data, SIZE, COL_DTYPE_DOUBLE, err);
     free(double_data);
     col_free(col_double);
 
-    float *float_data = col_float_data_create(size);
-    struct col *col_float = col_float_dummy_create("float", size);
-    col_assert(col_float, "float", float_data, size, COL_DTYPE_FLOAT, err);
+    float *float_data = col_float_data_create(SIZE);
+    struct col *col_float = col_float_dummy_create("float", SIZE);
+    col_assert(col_float, "float", float_data, SIZE, COL_DTYPE_FLOAT, err);
     free(float_data);
     col_free(col_float);
 
-    int64_t *int64_data = col_int64_data_create(size);
-    struct col *col_int64 = col_int64_dummy_create("int64", size);
-    col_assert(col_int64, "int64", int64_data, size, COL_DTYPE_INT64, err);
+    int64_t *int64_data = col_int64_data_create(SIZE);
+    struct col *col_int64 = col_int64_dummy_create("int64", SIZE);
+    col_assert(col_int64, "int64", int64_data, SIZE, COL_DTYPE_INT64, err);
     free(int64_data);
     col_free(col_int64);
 
-    int32_t *int32_data = col_int32_data_create(size);
-    struct col *col_int32 = col_int32_dummy_create("int32", size);
-    col_assert(col_int32, "int32", int32_data, size, COL_DTYPE_INT32, err);
+    int32_t *int32_data = col_int32_data_create(SIZE);
+    struct col *col_int32 = col_int32_dummy_create("int32", SIZE);
+    col_assert(col_int32, "int32", int32_data, SIZE, COL_DTYPE_INT32, err);
     free(int32_data);
     col_free(col_int32);
 
-    uint8_t *uint8_data = col_uint8_data_create(size);
-    struct col *col_uint8 = col_uint8_dummy_create("uint8", size);
-    col_assert(col_uint8, "uint8", uint8_data, size, COL_DTYPE_UINT8, err);
+    uint8_t *uint8_data = col_uint8_data_create(SIZE);
+    struct col *col_uint8 = col_uint8_dummy_create("uint8", SIZE);
+    col_assert(col_uint8, "uint8", uint8_data, SIZE, COL_DTYPE_UINT8, err);
     free(uint8_data);
     col_free(col_uint8);
 
-    char **string_data = col_string_data_create(size);
-    struct col *col_string = col_string_dummy_create("char", size);
-    col_assert(col_string, "char", string_data, size, COL_DTYPE_STRING, err);
-    for (size_t i = 0; i < size; i++)
+    char **string_data = col_string_data_create(SIZE);
+    struct col *col_string = col_string_dummy_create("char", SIZE);
+    col_assert(col_string, "char", string_data, SIZE, COL_DTYPE_STRING, err);
+    for (size_t i = 0; i < SIZE; i++)
         free(string_data[i]);
     free(string_data);
     col_free(col_string);
 
     /* err */
-    double *data = col_double_data_create(size);
+    double *data = col_double_data_create(SIZE);
 
-    struct col *col_null_name = col_create_array(NULL, data, size, COL_DTYPE_DOUBLE, &err);
+    struct col *col_null_name = col_create_array(NULL, data, SIZE, COL_DTYPE_DOUBLE, &err);
     assert(col_null_name == NULL);
     assert(err == COL_ERR_EMPTY_NAME);
 
-    struct col *col_blank_name = col_create_array("", data, size, COL_DTYPE_DOUBLE, &err);
+    struct col *col_blank_name = col_create_array("", data, SIZE, COL_DTYPE_DOUBLE, &err);
     assert(col_blank_name == NULL);
     assert(err == COL_ERR_EMPTY_NAME);
 
-    struct col *col_empty_data = col_create_array("no_data", NULL, size, COL_DTYPE_DOUBLE, &err);
+    struct col *col_empty_data = col_create_array("no_data", NULL, SIZE, COL_DTYPE_DOUBLE, &err);
     assert(col_empty_data == NULL);
     assert(err == COL_ERR_NO_DATA);
 
@@ -142,103 +143,102 @@ void test_col_create_array() {
 
 void test_col_clone() {
     int err = 0;
-    int size = 999;
 
     /* valid */
-    double *double_data = col_double_data_create(size);
-    struct col *col_double = col_double_dummy_create("double", size);
+    double *double_data = col_double_data_create(SIZE);
+    struct col *col_double = col_double_dummy_create("double", SIZE);
     struct col *col_double_clone = col_clone(col_double, &err);
     col_free(col_double);
     col_assert(
         col_double_clone,
         "double",
         double_data,
-        size,
+        SIZE,
         COL_DTYPE_DOUBLE,
 	    err
     );
     col_free(col_double_clone);
     free(double_data);
 
-    float *float_data = col_float_data_create(size);
-    struct col *col_float = col_float_dummy_create("float", size);
+    float *float_data = col_float_data_create(SIZE);
+    struct col *col_float = col_float_dummy_create("float", SIZE);
     struct col *col_float_clone = col_clone(col_float, &err);
     col_free(col_float);
     col_assert(
         col_float_clone,
         "float",
         float_data,
-        size,
+        SIZE,
         COL_DTYPE_FLOAT,
 	    err
     );
     col_free(col_float_clone);
     free(float_data);
 
-    int64_t *int64_data = col_int64_data_create(size);
-    struct col *col_int64 = col_int64_dummy_create("int64", size);
+    int64_t *int64_data = col_int64_data_create(SIZE);
+    struct col *col_int64 = col_int64_dummy_create("int64", SIZE);
     struct col *col_int64_clone = col_clone(col_int64, &err);
     col_free(col_int64);
     col_assert(
         col_int64_clone,
         "int64",
         int64_data,
-        size,
+        SIZE,
         COL_DTYPE_INT64,
 	    err
     );
     col_free(col_int64_clone);
     free(int64_data);
 
-    int32_t *int32_data = col_int32_data_create(size);
-    struct col *col_int32 = col_int32_dummy_create("int32", size);
+    int32_t *int32_data = col_int32_data_create(SIZE);
+    struct col *col_int32 = col_int32_dummy_create("int32", SIZE);
     struct col *col_int32_clone = col_clone(col_int32, &err);
     col_free(col_int32);
     col_assert(
         col_int32_clone,
         "int32",
         int32_data,
-        size,
+        SIZE,
         COL_DTYPE_INT32,
 	    err
     );
     col_free(col_int32_clone);
     free(int32_data);
 
-    uint8_t *uint8_data = col_uint8_data_create(size);
-    struct col *col_uint8 = col_uint8_dummy_create("uint8", size);
+    uint8_t *uint8_data = col_uint8_data_create(SIZE);
+    struct col *col_uint8 = col_uint8_dummy_create("uint8", SIZE);
     struct col *col_uint8_clone = col_clone(col_uint8, &err);
     col_free(col_uint8);
     col_assert(
         col_uint8_clone,
         "uint8",
         uint8_data,
-        size,
+        SIZE,
         COL_DTYPE_UINT8,
 	    err
     );
     col_free(col_uint8_clone);
     free(uint8_data);
 
-    char **string_data = col_string_data_create(size);
-    struct col *col_string = col_string_dummy_create("string", size);
+    char **string_data = col_string_data_create(SIZE);
+    struct col *col_string = col_string_dummy_create("string", SIZE);
     struct col *col_string_clone = col_clone(col_string, &err);
     col_free(col_string);
     col_assert(
         col_string_clone,
         "string",
         string_data,
-        size,
+        SIZE,
         COL_DTYPE_STRING,
 	    err
     );
     col_free(col_string_clone);
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < SIZE; i++)
         free(string_data[i]);
     free(string_data);
 
     /* err */
-    struct col *col_valid1 = col_double_dummy_create("valid1", size);
+    struct col *col_valid1 = col_double_dummy_create("valid1", SIZE);
     struct col *col_valid2 = col_clone(col_valid1, &err);
     assert(err == COL_ERR_OK);
     struct col *col_valid3 = col_clone(col_valid1, &err);
@@ -270,9 +270,7 @@ void test_col_clone() {
 }
 
 void test_col_free() {
-    size_t size = 999;
-
-    struct col *col = col_double_dummy_create("col", size);
+    struct col *col = col_double_dummy_create("col", SIZE);
     assert(col_free(col) == COL_ERR_OK);
 }
 

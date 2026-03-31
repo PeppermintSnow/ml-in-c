@@ -29,7 +29,7 @@ function HomepageHeader() {
               </Link>
               <Link
                 className="button hero__button button--lg"
-                to="/api/datatypes/dataframe/core/dataframe_t">
+                to="/api/dtypes/col/core/type/col_t">
                 API Reference
               </Link>
             </div>

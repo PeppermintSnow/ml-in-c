@@ -181,7 +181,7 @@ const config: Config = {
             },
             {
               label: 'API',
-              to: '/api/datatypes/dataframe/core/dataframe_t',
+              to: '/api/dtypes/col/core/type/col_t',
             },
             {
               label: 'Changelog',

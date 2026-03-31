@@ -9,7 +9,7 @@ last_updated:
 
 **ML-in-C** is a machine learning library written entirely in **pure C**. It aims to provide a complete machine learning toolkit with a primary focus on **performance**, **low-level understanding**, and **experimental development**. 
 
-The library introduces a foundational datatype called [**`DataFrame`**](/api/datatypes/dataframe/core/dataframe_t), which takes inspiration from the functionality of [**`Pandas' DataFrame`**](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame) while having similar performance and structure to [**`NumPy's ndarray`**](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray) implemented in C. Differing from most object-oriented machine learning workflows, ML-in-C follows a procedural paradigm as it is the C language's native style. 
+The library uses a central datatype called **`dataframe_t`**, which takes inspiration from the functionality of [**`Pandas' DataFrame`**](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame) while having similar performance and structure to [**`NumPy's ndarray`**](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray) implemented in C. Differing from most object-oriented machine learning workflows, ML-in-C follows a procedural paradigm as it is the C language's native style. 
 
 ## Why does this library exist?
 

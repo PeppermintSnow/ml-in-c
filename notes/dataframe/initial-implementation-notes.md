@@ -54,8 +54,8 @@ Datasets may get large in practice, which is why the memory-efficient [**Quick S
 
 One noticeable limitation in the current implementation is the lack of tie-breakers. In other words, the dataframe may only be sorted by one key at a time, unlike [**SQL's `ORDER BY`**][sql_order] keyword, which allows for multiple key sorting. Again, sorting is not expected to be frequently used, hence, this feature is not prioritized.
 
-[df_t]: /api/datatypes/dataframe/core/dataframe_t "dataframe_t"
-[mask_t]: /api/datatypes/dataframe/ops/mask/df_mask_t "df_mask_t"
+[df_t]: #
+[mask_t]: #
 [np]: https://numpy.org/doc/2.4/reference/arrays.ndarray.html
 [lomuto]: https://www.geeksforgeeks.org/dsa/lomuto-partition-algorithm/
 [pd_mask]: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mask.html
